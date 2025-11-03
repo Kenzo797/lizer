@@ -56,5 +56,5 @@ async function testarDeleteLink(linkId)
 
 // testarUpdateLink("68f05e92ed5310df96102cb8").catch(console.error);
 // testarDeleteLink("68e5b67bd6d0cbfd02382bdb").catch(console.error);
-// testarAddLink().catch(console.error);
-testarAddUser().catch(console.error);
+testarAddLink().catch(console.error);
+// testarAddUser().catch(console.error);

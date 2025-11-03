@@ -14,11 +14,16 @@ async function getCollection()
     return linkCollection;    
 }
 
-export async function addLink(linkData) 
+export async function addLink(Data) 
 {
     try 
     {
         const collection = await getCollection();
+
+        const linkData = {
+            ...Data,
+            createdAt: new Date().toLocaleString()
+        };
 
         const result = await collection.insertOne(linkData);
         // console.log("Link adicionado com sucesso!!!: ", result.insertedId);
@@ -111,11 +116,6 @@ export async function getLinkById(linkId)
         const collection = await getCollection();
 
         const query = formatObjectId(linkId); 
-        
-        // const query = typeof linkId === 'string' ? 
-        // { _id: new ObjectId(linkId)} :
-        // { _id : linkId};
-        // console.log(query);
 
         const link = await collection.findOne(query);
 
