@@ -1,118 +1,78 @@
-import connectDatabase from "../config/database.js";
-import { formatObjectId } from "../traits/formatTrait.js";
+import * as record from "./RecordOps.js";
+import bcrypt from "bcrypt";
 
-let UserCollection;
+const COLLECTION = "users";
 
-async function getCollection() 
-{
-    if(!UserCollection) 
-    {
-        const db = await connectDatabase();
-        UserCollection = db.collection("Users");
-    }
-    return UserCollection;    
-}
-
-export async function createUser(UserData) 
+export async function onSave(data) 
 {
     try 
     {
-        const collection = await getCollection();
+        if (!data.password) {
+            throw new Error('Senha é obrigatória');
+        }
 
-        const result = await collection.insertOne(UserData);
-        
+        const hashedPassword = await bcrypt.hash(data.password, 8);
+
+        const userData = {
+            ... data,
+            password: hashedPassword
+        }
+
+        const result = await record.onSave(COLLECTION, userData);
+
         return result;
-       
+
     }
     catch(error) 
     {
-        console.error("Falha ao adicionar o User: ", error);
+        console.error("Falha ao adicionar usuário: ", error);
     }
 }
 
-export async function updateUser(UserId, UserData) 
+export async function onEdit(userId, userData) 
 {
     try 
     {
-        const collection = await getCollection();
-
-        const result = await collection.findOneAndUpdate(
-            formatObjectId(UserId),
-            {
-                $set: {
-                    ...UserData,
-                    updatedAt: new Date().toLocaleString()
-                }
-            },
-            { returnDocument: "after"}
-        );
-        
-        return result;
-       
+        return await record.onEdit(COLLECTION, userId, userData);
     }
     catch(error) 
     {
-        console.error("Falha ao modificar o User: ", error);
+        console.error("Falha ao editar usuário: ", error);
     }
 }
 
-export async function deleteUser(UserId) 
+export async function onDelete(userId) 
 {
     try
     {
-        const collection = await getCollection();
-
-        const result = await collection.findOneAndDelete(
-            formatObjectId(UserId)
-        );
-
-        if(!result)
-        {
-            console.log("User não encontrado !!!");
-        }
-        else
-        {
-            console.log("User deletado com sucesso!!!, resultado: ", result);
-        }
-        
-        return result;
+        return await record.onDelete(COLLECTION, userId);
     }
     catch(error)
     {
-        console.error("Falha ao excluir o User: ", error);
+        console.error("Falha ao excluir usuário: ", error);
     }
 }
 
-export async function getAllUsers() 
+export async function getAll() 
 {
     try
     {
-        const collection = await getCollection();
-
-        const Users = await collection.find({}).toArray();
-
-        return Users;
+       return await record.getAll(COLLECTION);
     }    
     catch(error)
     {
-        console.error("Falha na aquisição dos Users salvos: ", error);
+        console.error("Falha na aquisição dos usuários salvos: ", error);
     }
 }
 
-export async function getUserById(UserId) 
+export async function getById(userId) 
 {
     try
     {
-        const collection = await getCollection();
-
-        const query = formatObjectId(UserId); 
-        
-        const User = await collection.findOne(query);
-
-        return User;
+        return await record.getById(COLLECTION, userId);
     }    
     catch(error)
     {
-        console.error("Falha na aquisição do User: ", error);
+        console.error("Falha na aquisição do usuário: ", error);
     }
 }

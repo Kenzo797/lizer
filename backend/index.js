@@ -29,7 +29,7 @@ async function testarAddLink()
     createdAt: new Date()
   });
 
-  console.log("Link Adicionado com sucesso!!: ", result);
+  // console.log("Link Adicionado com sucesso!!: ", result);
 
 }
 

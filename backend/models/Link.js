@@ -1,35 +1,12 @@
-import connectDatabase from "../config/database.js";
-import { ObjectId } from "mongodb";
-import { formatObjectId } from "../traits/formatTrait.js";
+import * as record from "./RecordOps.js";
 
-let linkCollection;
+const COLLECTION = "links";
 
-async function getCollection() 
-{
-    if(!linkCollection) 
-    {
-        const db = await connectDatabase();
-        linkCollection = db.collection("links");
-    }
-    return linkCollection;    
-}
-
-export async function addLink(Data) 
+export async function onSave(linkData) 
 {
     try 
     {
-        const collection = await getCollection();
-
-        const linkData = {
-            ...Data,
-            createdAt: new Date().toLocaleString()
-        };
-
-        const result = await collection.insertOne(linkData);
-        // console.log("Link adicionado com sucesso!!!: ", result.insertedId);
-        
-        return result;
-       
+        return await record.onSave(COLLECTION, linkData);
     }
     catch(error) 
     {
@@ -37,28 +14,11 @@ export async function addLink(Data)
     }
 }
 
-export async function updateLink(linkId, linkData) 
+export async function onEdit(linkId, linkData) 
 {
     try 
     {
-        const collection = await getCollection();
-
-        const result = await collection.findOneAndUpdate(
-            formatObjectId(linkId),
-            {
-                $set: {
-                    ...linkData,
-                    modified: true,
-                    updatedAt: new Date().toLocaleString()
-                }
-            },
-            { returnDocument: "after"}
-        );
-        
-        // console.log(`✅ Link ${linkId} modificado! resultado: `, result);
-
-        return result;
-       
+        return await record.onEdit(COLLECTION, linkId, linkData);
     }
     catch(error) 
     {
@@ -66,26 +26,11 @@ export async function updateLink(linkId, linkData)
     }
 }
 
-export async function deleteLink(linkId) 
+export async function onDelete(linkId) 
 {
     try
     {
-        const collection = await getCollection();
-
-        const result = await collection.findOneAndDelete(
-            formatObjectId(linkId)
-        );
-
-        if(!result)
-        {
-            console.log("Link não encontrado !!!");
-        }
-        else
-        {
-            console.log("Link deletado com sucesso!!!, resultado: ", result);
-        }
-        
-        return result;
+        return await record.onDelete(COLLECTION, linkId);
     }
     catch(error)
     {
@@ -93,15 +38,11 @@ export async function deleteLink(linkId)
     }
 }
 
-export async function getAllLinks() 
+export async function getAll() 
 {
     try
     {
-        const collection = await getCollection();
-
-        const links = await collection.find({}).toArray();
-
-        return links;
+       return await record.getAll(COLLECTION);
     }    
     catch(error)
     {
@@ -109,17 +50,11 @@ export async function getAllLinks()
     }
 }
 
-export async function getLinkById(linkId) 
+export async function getById(linkId) 
 {
     try
     {
-        const collection = await getCollection();
-
-        const query = formatObjectId(linkId); 
-
-        const link = await collection.findOne(query);
-
-        return link;
+        return await record.getById(COLLECTION, linkId);
     }    
     catch(error)
     {
