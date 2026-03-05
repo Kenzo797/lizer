@@ -64,8 +64,7 @@ export function createRoutes(model, routeName)
                 success: true,
                 message: `${routeName} salvo com sucesso !!!`,
                 data: {
-                    id: result.insertedId,
-                    ...req.body
+                    id: result.insertedId
                 }
             });
         }
