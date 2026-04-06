@@ -9,7 +9,7 @@ async function getCollection(collectionName)
     {
         const db = await connectDatabase();
         collections[collectionName] = db.collection(collectionName);
-        console.log(`✅ Coleção '${collectionName}' conectada`);
+        // console.log(`✅ Coleção '${collectionName}' conectada`);
     }
     return collections[collectionName];
 }
@@ -29,12 +29,19 @@ export async function getById(collectionName, id)
     return item;
 }
 
+export async function getByQuery(collectionName, query) 
+{
+    const collection = await getCollection(collectionName);
+    const item = await collection.findOne(query);
+    return item;    
+}
+
 export async function onSave(collectionName, data) 
 {
     const collection = await getCollection(collectionName);
     const itemData = {
         ...data,
-        createdAt: new Date().toLocaleString()
+        createdAt: new Date()
     };
     const result = await collection.insertOne(itemData);
     return result;

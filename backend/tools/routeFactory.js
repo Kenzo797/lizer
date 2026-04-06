@@ -3,7 +3,7 @@ import express from 'express';
 export function createRoutes(model, routeName) 
 {
 
-    console.log(`🔧 Criando rotas para: ${routeName}`);
+    // console.log(`🔧 Criando rotas para: ${routeName}`);
     // console.log(`🔧 Model functions:`, Object.keys(model));
 
     const router = express.Router();

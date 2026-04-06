@@ -76,3 +76,15 @@ export async function getById(userId)
         console.error("Falha na aquisição do usuário: ", error);
     }
 }
+
+export async function getByQuery(query) 
+{
+    try
+    {
+        return await record.getByQuery(COLLECTION, query);
+    }
+    catch(error)
+    {
+        console.error("Falha na aquisição do usuário: ", error);
+    }
+}
