@@ -10,7 +10,6 @@ let db;
 
 export async function connectDatabase() 
 {
-    // console.log("Conectando a base de dados...");
     if(db)
     {
         return db;
@@ -19,7 +18,6 @@ export async function connectDatabase()
     try 
     {
         await client.connect();
-        // console.log("Conexão estabelecida ccom sucesso!!!");
         db = client.db("lizer-db");
 
         return db;

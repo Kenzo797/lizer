@@ -1,60 +1,20 @@
-import { addLink, deleteLink, getAllLinks, getLinkById, updateLink } from "./models/Link.js";
-import { createUser } from "./models/Users.js";
+// import {getByUserId } from "./models/Link.js";
+// // import { getAllByUserId } from "./models/RecordOps.js";
+// import connectDatabase from './config/database.js';
+// await connectDatabase();
 
 
-async function testarUpdateLink(linkId) 
-{
-
-  console.log("Testando atualização de link...");
+// async function testarGetLinkByUserId(userId) 
+// {
   
-  const result = await updateLink(linkId, {
-    title: "Novo Link MODIFICADO em: " + new Date().toLocaleString(),
-    tags: ["atualizado23235234243", "novo123123"],
-    fodase: "sim"
-  });
+//   const result = await getByUserId(userId);
 
-  // console.log("resultado da modificação: ", result);
+//   if(result)
+//   {
+//     console.log("links por id de usuário: ", result);
+//   }
 
-}
+// }
 
-async function testarAddLink() 
-{
-  console.log("Testando adição de um link...");
-  
-  const result = await addLink({
-    title: "Novo Link " + new Date().toLocaleString(),
-    tags: ["novo link", "novidade"],
-    url: "www.teste." + new Date().toLocaleString() + ".com",
-    description: "teste de adição:" + new Date().toLocaleString(),
-    createdAt: new Date()
-  });
 
-  // console.log("Link Adicionado com sucesso!!: ", result);
-
-}
-
-async function testarAddUser() 
-{
-  console.log("Testando adição de um usuário...");
-  
-  const result = await createUser({
-    name: "Arthur",
-    email: "Arthur@email.com",
-    password: "1234",
-    createdAt: new Date().toLocaleString()
-  });
-
-  console.log("Usuário Adicionado com sucesso!!: ", result);
-
-}
-
-async function testarDeleteLink(linkId) 
-{
-  console.log("Testando exclusão de link...");
-  await deleteLink(linkId);
-}
-
-// testarUpdateLink("68f05e92ed5310df96102cb8").catch(console.error);
-// testarDeleteLink("68e5b67bd6d0cbfd02382bdb").catch(console.error);
-// testarAddLink().catch(console.error);
-// testarAddUser().catch(console.error);
+// testarGetLinkByUserId("69d3c5d208f2e5b0a96f2c95");

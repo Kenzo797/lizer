@@ -1,18 +1,33 @@
 import express from 'express';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
 
-export function createRoutes(model, routeName) 
+export function createRoutes(model, routeName, options = {}) 
 {
 
-    // console.log(`🔧 Criando rotas para: ${routeName}`);
-    // console.log(`🔧 Model functions:`, Object.keys(model));
-
     const router = express.Router();
+    const { protected: isProtected = false} = options;
+
+    if(isProtected)
+    {
+        router.use(authMiddleware);
+    }
 
     // GET /api/{routeName} - Listar todos
     router.get('/', async (req, res) => {
         try 
         {
-            const objects = await model.getAll();
+            let objects;
+            
+            if(isProtected && req.userId)
+            {
+                objects = await model.getManyByQuery({ userId: req.userId});
+            }
+            else
+            {
+                objects = await model.getAll();
+            }
+
+
             res.json({
                 success: true,
                 count: objects.length,
@@ -40,6 +55,14 @@ export function createRoutes(model, routeName)
                     error: `${routeName} não encontrado`
                 });
             }
+
+            if(isProtected && object.userId !== req.userId)
+            {
+                return res.status(403).json({
+                    success: false,
+                    error: "Acesso negado"
+                });
+            }
     
             res.json({
                 success: true,
@@ -59,7 +82,15 @@ export function createRoutes(model, routeName)
     router.post('/', async (req, res) => {
         try
         {
-            const result = await model.onSave(req.body);
+
+            let data = req.body;
+
+            if(isProtected && req.userId)
+            {
+                data = { ...data, userId: req.userId};
+            }
+
+            const result = await model.onSave(data);
             res.status(201).json({
                 success: true,
                 message: `${routeName} salvo com sucesso !!!`,
@@ -82,6 +113,19 @@ export function createRoutes(model, routeName)
         
         try
         {
+
+            if(isProtected)
+            {
+                const existing = await model.getById(req.params.id);
+                if(!existing || existing.userId !== req.userId)
+                {
+                    return res.status(403).json({
+                        success: false,
+                        error: "Acesso negado"
+                    });
+                }
+            }
+
             const result = await model.onEdit(req.params.id, req.body);
             if(result)
             {
@@ -112,6 +156,20 @@ export function createRoutes(model, routeName)
     router.delete('/:id', async (req, res) => {
         try
         {
+
+            if(isProtected)
+            {
+                const existing = await model.getById(req.params.id);
+                if(!existing || existing.userId !== req.userId)
+                {
+                    return res.status(403).json({
+                        success: false,
+                        error: "Acesso negado"
+                    });
+                }
+            }
+
+
             const result = await model.onDelete(req.params.id);
             if(result)
             {

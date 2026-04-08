@@ -61,3 +61,15 @@ export async function getById(linkId)
         console.error("Falha na aquisição do link: ", error);
     }
 }
+
+export async function getManyByQuery(query) 
+{
+    try
+    {
+        return await record.getManyByQuery(COLLECTION, query);
+    }
+    catch(error)
+    {
+        console.error("Falha na aquisição: ", error);
+    } 
+}

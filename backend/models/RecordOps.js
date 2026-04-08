@@ -9,7 +9,6 @@ async function getCollection(collectionName)
     {
         const db = await connectDatabase();
         collections[collectionName] = db.collection(collectionName);
-        // console.log(`✅ Coleção '${collectionName}' conectada`);
     }
     return collections[collectionName];
 }
@@ -35,6 +34,14 @@ export async function getByQuery(collectionName, query)
     const item = await collection.findOne(query);
     return item;    
 }
+
+export async function getManyByQuery(collectionName, query) 
+{
+    const collection = await getCollection(collectionName);
+    const items = await collection.find(query).toArray();    
+    return items;
+}
+
 
 export async function onSave(collectionName, data) 
 {

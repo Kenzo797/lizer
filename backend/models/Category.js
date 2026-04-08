@@ -61,3 +61,15 @@ export async function getById(categoryId)
         console.error("Falha na busca por categoria: ", error);
     }
 }
+
+export async function getManyByQuery(query) 
+{
+    try
+    {
+        return await record.getManyByQuery(COLLECTION, query);
+    }
+    catch(error)
+    {
+        console.error("Falha na aquisição: ", error);
+    } 
+}
