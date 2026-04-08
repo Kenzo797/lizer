@@ -1,23 +1,23 @@
 <template>
   <div class="dashboard">
     <header>
-      <h1>Meus Links</h1>
+      <h1>Lizer - Meus Links</h1>
       <div class="user-info">
         <span>Olá, {{ authStore.user?.name || 'Usuário' }}</span>
-        <button @click="handleLogout">Sair</button>
+        <button @click="handleLogout" class="btn-logout">Sair</button>
       </div>
     </header>
     
-    <div class="content">
-      <p>Dashboard em construção...</p>
-      <p>Em breve você poderá gerenciar seus links aqui!</p>
-    </div>
+    <main>
+      <LinkList />
+    </main>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import LinkList from '../components/LinkList.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -45,6 +45,7 @@ header {
 
 h1 {
   color: #42b883;
+  margin: 0;
 }
 
 .user-info {
@@ -53,7 +54,7 @@ h1 {
   align-items: center;
 }
 
-button {
+.btn-logout {
   padding: 0.5rem 1rem;
   background-color: #dc3545;
   color: white;
@@ -62,12 +63,11 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.btn-logout:hover {
   background-color: #c82333;
 }
 
-.content {
+main {
   padding: 2rem;
-  text-align: center;
 }
 </style>

@@ -70,9 +70,25 @@ const handleRegister = async () => {
     email: email.value,
     password: password.value
   })
-  
-  if (result.success) {
-    router.push('/login')
+
+  if (result.success) 
+  {
+    if(result.data.token)
+    {
+      localStorage.setItem('token', result.data.token);
+      localStorage.setItem('user', JSON.stringify(result.data.user));
+      
+      authStore.token = result.data.token;
+      authStore.user = result.data.user;
+
+      await new Promise(resolve => setTimeout(resolve, 10))
+
+      router.push('/dashboard');
+    }
+    else
+    {
+      router.push('/login');
+    }
   } else {
     error.value = result.message
   }

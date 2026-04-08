@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '../stores/auth'
 
+// Importar as views
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Dashboard from '../views/Dashboard.vue'
@@ -20,38 +21,35 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register,
-    meta: { guest: true}
+    meta: { guest: true }
   },
   {
     path: '/dashboard',
-    name : 'Dashboard',
+    name: 'Dashboard',
     component: Dashboard,
     meta: { requiresAuth: true }
   }
 ]
-
 
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const authStore = useAuthStore()
   const isAuthenticated = authStore.isAuthenticated
 
-  if(to.meta.requiresAuth && !isAuthenticated)
-  {
-    next('/login')
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return '/login'
   }
-  else if(to.meta.guest && isAuthenticated)
-  {
-    next('/dashboard')
+  
+  if (to.meta.guest && isAuthenticated) {
+    return '/dashboard'
   }
-  else
-  {
-    next()
-  }
+  
+  // Permite a navegação
+  return true
 })
 
 export default router
