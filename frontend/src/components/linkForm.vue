@@ -4,42 +4,31 @@
       <h2>{{ isEditing ? 'Editar Link' : 'Novo Link' }}</h2>
       
       <form @submit.prevent="save">
+        <!-- Campos existentes -->
         <div class="form-group">
           <label>Título *</label>
-          <input 
-            v-model="form.title" 
-            type="text" 
-            required
-            placeholder="Ex: Documentação Vue.js"
-          />
+          <input v-model="form.title" type="text" required />
         </div>
 
         <div class="form-group">
           <label>URL *</label>
-          <input 
-            v-model="form.url" 
-            type="url" 
-            required
-            placeholder="https://..."
-          />
+          <input v-model="form.url" type="url" required />
         </div>
+
+        <!-- ✅ NOVO: Seletor de categorias -->
+        <CategorySelector 
+          v-model="form.categoryId"
+          @category-created="handleCategoryCreated"
+        />
 
         <div class="form-group">
           <label>Descrição</label>
-          <textarea 
-            v-model="form.description" 
-            rows="3"
-            placeholder="Descrição opcional do link..."
-          ></textarea>
+          <textarea v-model="form.description" rows="3"></textarea>
         </div>
 
         <div class="form-group">
           <label>Tags (separadas por vírgula)</label>
-          <input 
-            v-model="tagsInput" 
-            type="text"
-            placeholder="vue, frontend, documentação"
-          />
+          <input v-model="tagsInput" type="text" />
         </div>
 
         <div class="form-actions">
@@ -58,6 +47,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { linkService } from '../services/linkService';
+import CategorySelector from './CategorySelector.vue';  // ← Importa
 
 const props = defineProps({
   link: {
@@ -72,7 +62,8 @@ const form = ref({
   title: '',
   url: '',
   description: '',
-  tags: []
+  tags: [],
+  categoryId: null  // ← Adiciona este campo
 });
 
 const tagsInput = ref('');
@@ -86,11 +77,17 @@ watch(() => props.link, (newLink) => {
       title: newLink.title,
       url: newLink.url,
       description: newLink.description || '',
-      tags: newLink.tags || []
+      tags: newLink.tags || [],
+      categoryId: newLink.categoryId || null  // ← Carrega a categoria
     };
     tagsInput.value = (newLink.tags || []).join(', ');
   }
 }, { immediate: true });
+
+const handleCategoryCreated = (newCategory) => {
+  console.log('Categoria criada:', newCategory);
+  // A categoria já foi selecionada automaticamente pelo CategorySelector
+};
 
 const save = async () => {
   saving.value = true;

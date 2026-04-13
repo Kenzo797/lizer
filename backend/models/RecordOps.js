@@ -63,7 +63,7 @@ export async function onEdit(collectionName, id, data)
         {
             $set: {
                 ...data,
-                updatedAt: new Date().toLocaleString()
+                updatedAt: new Date()
             }
         },
         { returnDocument: "after"}

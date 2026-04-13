@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard">
     <header>
-      <h1>Lizer - Meus Links</h1>
+      <h1>Lizer</h1>
+      <h3>Your Link Organizer</h3>
       <div class="user-info">
         <span>Olá, {{ authStore.user?.name || 'Usuário' }}</span>
         <button @click="handleLogout" class="btn-logout">Sair</button>

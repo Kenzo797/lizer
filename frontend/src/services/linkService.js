@@ -2,7 +2,8 @@ import api from './api';
 
 export const linkService = {
     
-    async getAll() {
+    async getAll() 
+    {
         const response = await api.get('/links');
         return response;
     },
