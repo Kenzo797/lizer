@@ -7,7 +7,7 @@
         <!-- Campos existentes -->
         <div class="form-group">
           <label>Título *</label>
-          <input v-model="form.title" type="text" required />
+          <input v-model="form.title" type="text" maxlength="50" placeholder="Documentação de..." required/>
         </div>
 
         <div class="form-group">
@@ -15,7 +15,6 @@
           <input v-model="form.url" type="url" required />
         </div>
 
-        <!-- ✅ NOVO: Seletor de categorias -->
         <CategorySelector 
           v-model="form.categoryId"
           @category-created="handleCategoryCreated"
@@ -23,12 +22,12 @@
 
         <div class="form-group">
           <label>Descrição</label>
-          <textarea v-model="form.description" rows="3"></textarea>
+          <textarea v-model="form.description" maxlength="60" rows="3"></textarea>
         </div>
 
         <div class="form-group">
           <label>Tags (separadas por vírgula)</label>
-          <input v-model="tagsInput" type="text" />
+          <input v-model="tagsInput" @keydown="checkTagLength" @blur="addTag" />
         </div>
 
         <div class="form-actions">
@@ -47,11 +46,15 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { linkService } from '../services/linkService';
-import CategorySelector from './CategorySelector.vue';  // ← Importa
+import CategorySelector from './categorySelector.vue';  // ← Importa
 
 const props = defineProps({
   link: {
     type: Object,
+    default: null
+  },
+  preSelectedCategoryId: {
+    type: String,
     default: null
   }
 });
@@ -65,6 +68,11 @@ const form = ref({
   tags: [],
   categoryId: null  // ← Adiciona este campo
 });
+
+if(!props.link)
+{
+  form.value.categoryId = props.preSelectedCategoryId;
+}
 
 const tagsInput = ref('');
 const saving = ref(false);
@@ -89,6 +97,13 @@ const handleCategoryCreated = (newCategory) => {
   // A categoria já foi selecionada automaticamente pelo CategorySelector
 };
 
+const maxTagLength = 25;
+const checkTagLength = (e) => {
+  if (e.target.value.length >= maxTagLength && e.key !== 'Backspace' && e.key !== 'Delete') {
+    e.preventDefault();
+  }
+};
+
 const save = async () => {
   saving.value = true;
   
@@ -96,6 +111,17 @@ const save = async () => {
     ...form.value,
     tags: tagsInput.value.split(',').map(t => t.trim()).filter(t => t)
   };
+
+  const tags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+
+  // Validar tamanho de cada tag
+  
+  const invalidTags = tags.filter(tag => tag.length > maxTagLength);
+
+  if (invalidTags.length > 0) {
+    alert(`Tags não podem ter mais que ${maxTagLength} caracteres: ${invalidTags.join(', ')}`);
+    return;
+  }
   
   try {
     if (isEditing.value) {

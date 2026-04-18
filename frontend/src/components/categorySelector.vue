@@ -60,7 +60,9 @@
     <!-- Preview da categoria selecionada -->
     <div v-if="selectedCategory" class="selected-category">
       <span class="category-badge">
-        📁 {{ selectedCategory.name }}
+        <i class="pi pi-folder">
+          
+        </i> {{ selectedCategory.name }}
       </span>
       <span v-if="selectedCategory.description" class="category-desc">
         {{ selectedCategory.description }}

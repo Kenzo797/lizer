@@ -12,6 +12,16 @@ export async function onSave(categoryData)
             throw new Error('Nome da categoria é obrigatório');
         }
 
+        if(categoryData.description && categoryData.description.length > 60)
+        {
+            throw new Error("Descrição deve ter no máximo 60 caracteres");
+        }
+
+        if(categoryData.name && categoryData.name.length > 20)
+        {
+            throw new Error("Nome deve ter no máximo 20 caracteres");
+        }
+
         const cleanName = categoryData.name.trim();
 
         const existing = await getManyByQuery({

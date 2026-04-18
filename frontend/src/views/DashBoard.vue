@@ -1,74 +1,88 @@
 <template>
   <div class="dashboard">
-    <header>
-      <h1>Lizer</h1>
-      <h3>Your Link Organizer</h3>
-      <div class="user-info">
-        <span>Olá, {{ authStore.user?.name || 'Usuário' }}</span>
-        <button @click="handleLogout" class="btn-logout">Sair</button>
-      </div>
+    <header class="content-header">
+      <h1>Todos os Links</h1>
+      
     </header>
     
-    <main>
-      <LinkList />
-    </main>
+    <LinkList 
+      title="Meus Links"
+      :links="links"
+      @refresh="fetchLinks"
+    />
+
+    <LinkForm 
+      v-if="showLinkForm" 
+      @close="showLinkForm = false"
+      @saved="handleLinkSaved"
+    />
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
-import LinkList from '../components/LinkList.vue'
+import { ref, onMounted } from 'vue';
+import { linkService } from '../services/linkService';
+import LinkList from '../components/linkList.vue';
+import LinkForm from '../components/linkForm.vue';
 
-const router = useRouter()
-const authStore = useAuthStore()
+const links = ref([]);
+const showLinkForm = ref(false);
 
-const handleLogout = () => {
-  authStore.logout()
-  router.push('/login')
-}
+const fetchLinks = async () => {
+  try {
+    const response = await linkService.getAll();
+    links.value = response.data.data || [];
+    links.value.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } catch (error) {
+    console.error('Erro ao buscar links:', error);
+  }
+};
+
+const handleLinkSaved = () => {
+  showLinkForm.value = false;
+  fetchLinks();
+};
+
+onMounted(() => {
+  fetchLinks();
+});
 </script>
 
 <style scoped>
 .dashboard {
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  padding: 24px 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-header {
-  background-color: white;
-  padding: 1rem 2rem;
+.content-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ddd;
 }
 
-h1 {
-  color: #42b883;
+.content-header h1 {
   margin: 0;
+  color: #333;
+  font-size: 28px;
 }
 
-.user-info {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.btn-logout {
-  padding: 0.5rem 1rem;
-  background-color: #dc3545;
+.btn-add-link {
+  padding: 10px 20px;
+  background-color: #42b883;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
 }
 
-.btn-logout:hover {
-  background-color: #c82333;
-}
-
-main {
-  padding: 2rem;
+.btn-add-link:hover {
+  background-color: #33a06f;
 }
 </style>

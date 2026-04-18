@@ -6,6 +6,26 @@ export async function onSave(linkData)
 {
     try 
     {
+        if(linkData.description && linkData.description.length > 60)
+        {
+            throw new Error("Descrição deve ter no máximo 60 caracteres");
+        }
+
+        if(linkData.title && linkData.title.length > 50)
+        {
+            throw new Error("Titulo deve ter no máximo 50 caracteres");
+        }
+
+        const maxTagLength = 25;
+
+        if (data.tags && Array.isArray(data.tags)) 
+        {
+            const invalidTags = data.tags.filter(tag => tag.length > maxTagLength);
+            if (invalidTags.length > 0) {
+                throw new Error(`Tags não podem ter mais que ${maxTagLength} caracteres`);
+            }
+        }
+
         return await record.onSave(COLLECTION, linkData);
     }
     catch(error) 

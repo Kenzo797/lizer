@@ -1,10 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
-// Importar as views
+// Layout
+import MainLayout from '../layouts/mainLayout.vue'
+
+// Páginas públicas (sem layout)
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
-import Dashboard from '../views/Dashboard.vue'
+
+// Páginas protegidas (com layout)
+import Dashboard from '../views/DashBoard.vue'
+import Categories from '../views/Categories.vue'
+import CategoryLinks from '../views/CategoryLinks.vue'
 
 const routes = [
   {
@@ -24,10 +31,26 @@ const routes = [
     meta: { guest: true }
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    meta: { requiresAuth: true }
+    path: '/',
+    component: MainLayout,
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: Dashboard
+      },
+      {
+        path: 'categories',
+        name: 'Categories',
+        component: Categories
+      },
+      {
+        path: 'category/:id',
+        name: 'CategoryLinks',
+        component: CategoryLinks
+      }
+    ]
   }
 ]
 
@@ -48,7 +71,6 @@ router.beforeEach((to, from) => {
     return '/dashboard'
   }
   
-  // Permite a navegação
   return true
 })
 
