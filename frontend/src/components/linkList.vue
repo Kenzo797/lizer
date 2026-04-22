@@ -28,12 +28,17 @@
             />
             <h3>{{ link.title }}</h3>
           </div>
+          
           <a :href="link.url" target="_blank" class="link-url">
             {{ link.url }}
           </a>
-          <p v-if="link.description" class="link-desc">
-            {{ link.description }}
-          </p>
+          
+          <!-- DESCRIÇÃO COMO TOOLTIP NO HOVER -->
+          <div v-if="link.description" class="link-desc-tooltip">
+            <i class="pi pi-info-circle"></i>
+            <span class="tooltip-text">{{ link.description }}</span>
+          </div>
+          
           <div v-if="link.tags && link.tags.length" class="link-tags">
             <span v-for="tag in link.tags" :key="tag" class="tag">
               {{ tag }}
@@ -200,20 +205,24 @@ const closeForm = () => {
 }
 
 .link-card {
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   display: flex;
   justify-content: space-between;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(66, 184, 131, 0.1);
   /* align-self: start; */
 }
 
+
 .link-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(66,184,131,0.15);
+  border-color: rgba(66, 184, 131, 0.3);
 }
+
 
 .link-content {
   flex: 1;
@@ -239,30 +248,42 @@ const closeForm = () => {
 
 .link-content h3 {
   margin: 0;
-  color: #333;
+  color: #2c3e50;
   font-size: 16px;
+  font-weight: 600;
   flex: 1;
+  transition: color 0.2s;
+}
+
+.link-card:hover, .link-content h3 {
+  color: #42b883;
 }
 
 .link-url {
-  color: #42b883;
+  color: #6c757d;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 15px;
   word-break: break-all;
   display: block;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  /* background: rgba(66, 184, 131, 0.05); */
+  padding: 2px 0;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
 
 .link-url:hover {
-  text-decoration: underline;
+  background: rgba(66, 184, 131, 0.1);
+  color:#42b883;
+  text-decoration: none;
 }
 
 .link-desc {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -271,21 +292,90 @@ const closeForm = () => {
   margin: 8px 0;
 }
 
+/* Container do tooltip */
+.link-desc-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: help;
+  margin: 4px 0;
+  width: fit-content;
+}
+
+.link-desc-tooltip i {
+  color: #42b883;
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.link-desc-tooltip:hover i {
+  opacity: 1;
+}
+
+/* Texto do tooltip */
+.link-desc-tooltip .tooltip-text {
+  visibility: hidden;
+  background-color: #2c3e50;
+  color: #fff;
+  text-align: left;
+  border-radius: 8px;
+  padding: 10px 14px;
+  position: absolute;
+  z-index: 1000;
+  left: 30px;
+  white-space: normal;
+  max-width: 280px;
+  min-width: 200px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: normal;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+/* Seta do tooltip */
+.link-desc-tooltip .tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;                    /* Centraliza verticalmente */
+  right: 100%;                 /* Coloca à esquerda do tooltip */
+  margin-top: -6px;           /* Ajusta o centro (metade da altura da seta) */
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #2c3e50 transparent transparent;  /* Seta apontando para a direita */
+}
+
+/* Mostrar tooltip no hover */
+.link-desc-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
 .link-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .tag {
   background-color: #e9ecef;
   color: #495057;
   padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  transition: all 0.2s;
 }
 
+.tag:hover {
+  background-color: #42b883;
+  color: white;
+}
 .link-actions {
   display: flex;
   gap: 8px;
@@ -293,18 +383,38 @@ const closeForm = () => {
 }
 
 .btn-edit, .btn-delete {
-  background: none;
+  background: white;
   border: none;
   cursor: pointer;
-  font-size: 18px;
-  padding: 4px;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-edit {
+  color: #42b883;
 }
 
 .btn-edit:hover {
-  transform: scale(1.1);
+  background-color: #42b883;
+  color: white;
+  transform: scale(1.05);
+}
+
+.btn-delete {
+  color: #dc3545;
 }
 
 .btn-delete:hover {
-  transform: scale(1.1);
+  background-color: #dc3545;
+  color: white;
+  transform: scale(1.05);
 }
 </style>
