@@ -18,9 +18,9 @@ export async function onSave(linkData)
 
         const maxTagLength = 25;
 
-        if (data.tags && Array.isArray(data.tags)) 
+        if(linkData.tags && Array.isArray(linkData.tags)) 
         {
-            const invalidTags = data.tags.filter(tag => tag.length > maxTagLength);
+            const invalidTags = linkData.tags.filter(tag => tag.length > maxTagLength);
             if (invalidTags.length > 0) {
                 throw new Error(`Tags não podem ter mais que ${maxTagLength} caracteres`);
             }

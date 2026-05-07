@@ -1,7 +1,7 @@
 <template>
   <div class="edit-profile-container">
     <div class="edit-profile-card">
-      <h1>Lizer</h1>
+      <!-- <h1>Lizer</h1> -->
       <h2>Editar Perfil</h2>
       
       <form @submit.prevent="handleUpdate">

@@ -1,5 +1,5 @@
 import * as record from "./RecordOps.js";
-
+import * as linkModel from "./Link.js";
 const COLLECTION = "categories";
 
 export async function onSave(categoryData) 
@@ -70,6 +70,16 @@ export async function onEdit(categoryId, categoryData)
             throw new Error(`Já existe uma categoria com o nome "${newName}"`);
         }
 
+        if(categoryData.description && categoryData.description.length > 60)
+        {
+            throw new Error("Descrição deve ter no máximo 60 caracteres");
+        }
+
+        if(categoryData.name && categoryData.name.length > 20)
+        {
+            throw new Error("Nome deve ter no máximo 20 caracteres");
+        }
+
         const data = {
             name: newName,
             description: categoryData.description?.trim() || ''
@@ -87,7 +97,19 @@ export async function onDelete(categoryId)
 {
     try
     {
+
+        const associedLinks = await linkModel.getManyByQuery({ categoryId: categoryId});
+
+        if(associedLinks && associedLinks.length > 0)
+        {
+            for(const link  of associedLinks)
+            {
+                await linkModel.onEdit(link._id, { categoryId: null });
+            }
+        }
+
         return await record.onDelete(COLLECTION, categoryId);
+
     }
     catch(error)
     {

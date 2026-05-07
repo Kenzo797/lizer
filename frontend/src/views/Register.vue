@@ -124,6 +124,7 @@ h1 {
   text-align: center;
   color: #42b883;
   margin-bottom: 0.5rem;
+  font-size: 50px;
 }
 
 h2 {

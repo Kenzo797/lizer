@@ -34,7 +34,7 @@
 
           <small>{{ getLinkCount(category._id) }} links</small>
         </div>
-        <!-- ✅ ADICIONEI @click.stop nos botões para não navegar -->
+        
         <div class="category-actions" @click.stop>
           <button @click="editCategory(category)" class="btn-edit" title="Editar">
             <i class="pi pi-pencil"></i>
@@ -46,6 +46,8 @@
       </div>
     </div>
 
+    <confirmModal ref="confirmModal"/>
+
     <!-- Modal de formulário (criar/editar) -->
     <div v-if="showForm" class="modal-overlay" @click.self="closeForm">
       <div class="modal">
@@ -56,6 +58,7 @@
             <label>Nome *</label>
             <input 
               v-model="formData.name" 
+              maxlength="20"
               type="text" 
               required
               placeholder="Ex: Estudos, Trabalho, Pessoal"
@@ -92,6 +95,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';  // ← ADICIONAR
 import { categoryService } from '../services/categoryService';
 import { linkService } from '../services/linkService';
+import ConfirmModal from '../components/confirmModal.vue';
 
 const router = useRouter();  // ← ADICIONAR
 
@@ -102,6 +106,10 @@ const saving = ref(false);
 const showForm = ref(false);
 const editingCategory = ref(null);
 
+// const emit = defineEmits(['refresh']);
+
+const confirmModal = ref(null);
+
 const isEditing = computed(() => !!editingCategory.value);
 
 const formData = ref({
@@ -109,12 +117,11 @@ const formData = ref({
   description: ''
 });
 
-// Contar links por categoria
 const getLinkCount = (categoryId) => {
   return links.value.filter(link => link.categoryId === categoryId).length;
 };
 
-// ✅ FUNÇÃO PARA NAVEGAR
+
 const goToCategoryLinks = (category) => {
   router.push(`/category/${category._id}`);
 };
@@ -185,19 +192,29 @@ const editCategory = (category) => {
 
 // Excluir categoria
 const confirmDelete = async (category) => {
-  const linkCount = getLinkCount(category._id);
-  const message = linkCount > 0
-    ? `A categoria "${category.name}" tem ${linkCount} link(s). Excluir mesmo assim? Os links não serão apagados, mas ficarão sem categoria.`
-    : `Tem certeza que deseja excluir a categoria "${category.name}"?`;
-  
-  if (confirm(message)) {
-    try {
+  if(!confirmModal) return;
+
+  try
+  {
+    const result = await confirmModal.value.show({
+
+      title: 'Excluir Categoria',
+      message: 'Tem certeza que deseja excluir a categoria ?',
+      confirmText: 'Excluir',
+      cancelText: 'Cancelar'
+    });
+
+    if(result)
+    {
       await categoryService.delete(category._id);
       await loadCategories();
-    } catch (error) {
-      console.error('Erro ao excluir categoria:', error);
-      alert('Erro ao excluir categoria');
+      await loadLinks();
     }
+
+  }
+  catch (error)
+  {
+    console.log('Exclusão cancelada ou erro:', error);
   }
 };
 

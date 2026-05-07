@@ -2,22 +2,48 @@
   <div class="link-list">
     <div class="header">
       <h2>{{ title }}</h2>
-      <button @click="showForm = true" class="btn-add">
-        + Adicionar Link
-      </button>
+      <div class="header-actions">
+        <div class="search-box">
+          <i class="pi pi-search search-icon"></i>
+          <input 
+            v-model="searchTerm" 
+            type="text" 
+            placeholder="Buscar por título, URL ou tags..."
+            class="search-input"
+          />
+          <button 
+            v-if="searchTerm" 
+            @click="clearSearch" 
+            class="clear-search"
+            title="Limpar busca"
+          >
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+        <button @click="showForm = true" class="btn-add">
+          <i class="pi pi-plus"></i> Adicionar Link
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicador de resultados da busca -->
+    <div v-if="searchTerm" class="search-info">
+      <i class="pi pi-info-circle"></i>
+      Encontrado {{ filteredLinks.length }} resultado(s) para "{{ searchTerm }}"
     </div>
 
     <div v-if="loading" class="loading">
       Carregando...
     </div>
 
-    <div v-else-if="links.length === 0" class="empty">
-      <p>Você ainda não tem nenhum link.</p>
-      <p>Clique em "Adicionar Link" para começar!</p>
+    <div v-else-if="filteredLinks.length === 0" class="empty">
+      <p v-if="searchTerm">Nenhum link encontrado para "{{ searchTerm }}"</p>
+      <p v-else>Você ainda não tem nenhum link.</p>
+      <p v-if="!searchTerm">Clique em "Adicionar Link" para começar!</p>
     </div>
 
     <div v-else class="links-grid">
-      <div v-for="link in links" :key="link._id" class="link-card">
+      <div v-for="link in filteredLinks" :key="link._id" class="link-card">
         <div class="link-content">
           <div class="link-header">
             <img 
@@ -26,17 +52,15 @@
               alt="favicon"
               @error="handleImageError"
             />
-            <h3>{{ link.title }}</h3>
+            <h3 v-html="highlightText(link.title)"></h3>
           </div>
           
-          <a :href="link.url" target="_blank" class="link-url">
-            {{ link.url }}
+          <a :href="link.url" target="_blank" class="link-url" v-html="highlightText(link.url)">
           </a>
           
           <div class="link-footer">
             <div v-if="link.tags && link.tags.length" class="link-tags">
-              <span v-for="tag in link.tags" :key="tag" class="tag">
-                {{ tag }}
+              <span v-for="tag in link.tags" :key="tag" class="tag" v-html="highlightText(tag)">
               </span>
             </div>
             
@@ -57,6 +81,8 @@
       </div>
     </div>
 
+    <confirmModal ref="confirmModal"/>
+
     <!-- Modal de formulário -->
     <LinkForm 
       v-if="showForm" 
@@ -69,9 +95,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { linkService } from '../services/linkService';
 import LinkForm from './linkForm.vue';
+import ConfirmModal from './confirmModal.vue';
 
 const props = defineProps({
   links: {
@@ -94,9 +121,52 @@ const props = defineProps({
 
 const emit = defineEmits(['refresh']);
 
+const confirmModal = ref(null);
+
 const loading = ref(false);
 const showForm = ref(false);
 const editingLink = ref(null);
+const searchTerm = ref('');
+
+// Links filtrados pela busca
+const filteredLinks = computed(() => {
+  if (!searchTerm.value.trim()) {
+    return props.links;
+  }
+  
+  const term = searchTerm.value.toLowerCase().trim();
+  
+  return props.links.filter(link => {
+    // Busca no título
+    if (link.title?.toLowerCase().includes(term)) return true;
+    
+    // Busca na URL
+    if (link.url?.toLowerCase().includes(term)) return true;
+    
+    // Busca na descrição
+    if (link.description?.toLowerCase().includes(term)) return true;
+    
+    // Busca nas tags
+    if (link.tags && link.tags.some(tag => tag.toLowerCase().includes(term))) return true;
+    
+    return false;
+  });
+});
+
+// Destacar texto da busca
+const highlightText = (text) => {
+  if (!searchTerm.value || !text) return text;
+  
+  const term = searchTerm.value;
+  const regex = new RegExp(`(${term})`, 'gi');
+  
+  return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+};
+
+// Limpar busca
+const clearSearch = () => {
+  searchTerm.value = '';
+};
 
 const getDomain = (url) => {
   try {
@@ -122,15 +192,26 @@ const editLink = (link) => {
   showForm.value = true;
 };
 
-const confirmDelete = async (link) => {
-  if (confirm(`Tem certeza que deseja excluir o link "${link.title}"?`)) {
-    try {
-      await linkService.delete(link._id);
-      emit('refresh');
-    } catch (error) {
-      console.error('Erro ao excluir link:', error);
-    }
+const confirmDelete = async (link) => 
+{
+  if(!confirmModal.value) return;
+
+  try{
+    await confirmModal.value.show({
+      title: 'Excluir Link',
+      message: 'Tem certeza que deseja excluir o link ?',
+      confirmText: 'Excluir',
+      cancelText: 'Cancelar'
+    });
+
+    await linkService.delete(link._id);
+    emit('refresh');
   }
+  catch (error)
+  {
+    console.log('Exclusão cancelada ou erro:', error);
+  }
+  
 };
 
 const closeForm = () => {
@@ -142,7 +223,6 @@ const closeForm = () => {
 <style scoped>
 .link-list {
   max-width: 1200px;
-  /* margin: 0 auto; */
   padding: 20px;
   height: 100%;
   display: flex;
@@ -154,7 +234,89 @@ const closeForm = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
   margin-bottom: 24px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: #999;
+  font-size: 14px;
+}
+
+.search-input {
+  padding: 10px 36px 10px 36px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 260px;
+  font-size: 14px;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #42b883;
+  box-shadow: 0 0 0 2px rgba(66, 184, 131, 0.2);
+  width: 300px;
+}
+
+.clear-search {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-search:hover {
+  background-color: #e9ecef;
+  color: #666;
+}
+
+.search-info {
+  background-color: #e9ecef;
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-info i {
+  color: #42b883;
+}
+
+/* Destaque do termo buscado */
+:deep(.search-highlight) {
+  background-color: #42b88345;
+  color: #333;
+  padding: 0 2px;
+  border-radius: 3px;
+  font-weight: bold;
 }
 
 .btn-add {
@@ -164,7 +326,10 @@ const closeForm = () => {
   padding: 10px 20px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .btn-add:hover {
@@ -214,16 +379,13 @@ const closeForm = () => {
   justify-content: space-between;
   transition: all 0.3s ease;
   border: 1px solid rgba(66, 184, 131, 0.1);
-  /* align-self: start; */
 }
-
 
 .link-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(66,184,131,0.15);
   border-color: rgba(66, 184, 131, 0.3);
 }
-
 
 .link-content {
   flex: 1;
@@ -256,7 +418,7 @@ const closeForm = () => {
   transition: color 0.2s;
 }
 
-.link-card:hover, .link-content h3 {
+.link-card:hover .link-content h3 {
   color: #42b883;
 }
 
@@ -270,7 +432,6 @@ const closeForm = () => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* background: rgba(66, 184, 131, 0.05); */
   padding: 2px 0;
   border-radius: 6px;
   transition: all 0.2s;
@@ -278,19 +439,8 @@ const closeForm = () => {
 
 .link-url:hover {
   background: rgba(66, 184, 131, 0.1);
-  color:#42b883;
+  color: #42b883;
   text-decoration: none;
-}
-
-.link-desc {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #666;
-  font-size: 14px;
-  margin: 8px 0;
 }
 
 /* Container do tooltip */
@@ -341,11 +491,11 @@ const closeForm = () => {
 .link-desc-tooltip .tooltip-text::after {
   content: '';
   position: absolute;
-  top: 60%;                    /* Centraliza verticalmente */
-  right: 99%;                 /* Coloca à esquerda do tooltip */
+  top: 60%;
+  right: 99%;
   border-width: 6px;
   border-style: solid;
-  border-color: transparent #2c3e50 transparent transparent;  /* Seta apontando para a direita */
+  border-color: transparent #2c3e50 transparent transparent;
 }
 
 .link-desc-tooltip:hover .tooltip-text {
@@ -384,6 +534,7 @@ const closeForm = () => {
   background-color: #42b883;
   color: white;
 }
+
 .link-actions {
   display: flex;
   gap: 8px;
@@ -424,5 +575,29 @@ const closeForm = () => {
   background-color: #dc3545;
   color: white;
   transform: scale(1.05);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  .search-input {
+    width: 100%;
+  }
+  
+  .search-input:focus {
+    width: 100%;
+  }
 }
 </style>
