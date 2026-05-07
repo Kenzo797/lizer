@@ -12,6 +12,7 @@ import Register from '../views/Register.vue'
 import Dashboard from '../views/DashBoard.vue'
 import Categories from '../views/Categories.vue'
 import CategoryLinks from '../views/CategoryLinks.vue'
+import EditProfile from '@/views/EditProfile.vue'
 
 const routes = [
   {
@@ -29,6 +30,12 @@ const routes = [
     name: 'Register',
     component: Register,
     meta: { guest: true }
+  },
+  {
+    path: '/editprofile',
+    name: 'EditProfile',
+    component: EditProfile,
+    meta: { requiresAuth: true}
   },
   {
     path: '/',

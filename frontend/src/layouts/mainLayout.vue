@@ -17,8 +17,21 @@ import Sidebar from '../components/sidebar.vue';
   min-height: 100vh;
   height: 100vh;
   overflow: hidden;
-  background-color: #f5f5f5;
+  background-image: url('@/images/main-layout-waves-haikei.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-attachment: fixed;
 }
+
+/* .main-layout {
+   background-image: url('@/images/layered-waves-haikei.svg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-attachment: fixed;
+} */
+
 
 .main-content {
   flex: 1;

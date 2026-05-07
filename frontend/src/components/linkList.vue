@@ -33,16 +33,17 @@
             {{ link.url }}
           </a>
           
-          <!-- DESCRIÇÃO COMO TOOLTIP NO HOVER -->
-          <div v-if="link.description" class="link-desc-tooltip">
-            <i class="pi pi-info-circle"></i>
-            <span class="tooltip-text">{{ link.description }}</span>
-          </div>
-          
-          <div v-if="link.tags && link.tags.length" class="link-tags">
-            <span v-for="tag in link.tags" :key="tag" class="tag">
-              {{ tag }}
-            </span>
+          <div class="link-footer">
+            <div v-if="link.tags && link.tags.length" class="link-tags">
+              <span v-for="tag in link.tags" :key="tag" class="tag">
+                {{ tag }}
+              </span>
+            </div>
+            
+            <div v-if="link.description" class="link-desc-tooltip">
+              <i class="pi pi-info-circle"></i>
+              <span class="tooltip-text">{{ link.description }}</span>
+            </div>
           </div>
         </div>
         <div class="link-actions">
@@ -229,7 +230,7 @@ const closeForm = () => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 }
 
 .link-header {
@@ -297,10 +298,8 @@ const closeForm = () => {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   cursor: help;
-  margin: 4px 0;
-  width: fit-content;
+  flex-shrink: 0;
 }
 
 .link-desc-tooltip i {
@@ -325,6 +324,7 @@ const closeForm = () => {
   position: absolute;
   z-index: 1000;
   left: 30px;
+  bottom: 0px;
   white-space: normal;
   max-width: 280px;
   min-width: 200px;
@@ -341,25 +341,33 @@ const closeForm = () => {
 .link-desc-tooltip .tooltip-text::after {
   content: '';
   position: absolute;
-  top: 50%;                    /* Centraliza verticalmente */
-  right: 100%;                 /* Coloca à esquerda do tooltip */
-  margin-top: -6px;           /* Ajusta o centro (metade da altura da seta) */
+  top: 60%;                    /* Centraliza verticalmente */
+  right: 99%;                 /* Coloca à esquerda do tooltip */
   border-width: 6px;
   border-style: solid;
   border-color: transparent #2c3e50 transparent transparent;  /* Seta apontando para a direita */
 }
 
-/* Mostrar tooltip no hover */
 .link-desc-tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.link-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+  flex-direction: row-reverse;
 }
 
 .link-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-top: 4px;
+  flex: 1;
 }
 
 .tag {

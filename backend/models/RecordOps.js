@@ -58,7 +58,6 @@ export async function onEdit(collectionName, id, data)
 {
     const collection = await getCollection(collectionName);
     const query = formatObjectId(id);
-
     const result = await collection.findOneAndUpdate(query,
         {
             $set: {

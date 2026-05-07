@@ -1,10 +1,10 @@
 <template>
-  <div class="register-container">
-    <div class="register-card">
+  <div class="edit-profile-container">
+    <div class="edit-profile-card">
       <h1>Lizer</h1>
-      <h2>Criar Conta</h2>
+      <h2>Editar Perfil</h2>
       
-      <form @submit.prevent="handleRegister">
+      <form @submit.prevent="handleUpdate">
         <div class="form-group">
           <input 
             v-model="name" 
@@ -27,20 +27,20 @@
           <input 
             v-model="password" 
             type="password" 
-            placeholder="Senha"
-            required
+            placeholder="Nova senha (opcional)"
           />
+          <small class="password-hint">Deixe em branco para manter a senha atual</small>
         </div>
         
         <button type="submit" :disabled="loading">
-          {{ loading ? 'Cadastrando...' : 'Cadastrar' }}
+          {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
         </button>
         
         <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="success" class="success">{{ success }}</p>
         
-        <p class="login-link">
-          Já tem conta? 
-          <router-link to="/login">Faça login</router-link>
+        <p class="back-link">
+          <router-link to="/dashboard">Voltar para o Dashboard</router-link>
         </p>
       </form>
     </div>
@@ -48,9 +48,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { userService } from '../services/userService'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -60,45 +61,58 @@ const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
+const success = ref('')
 
-const handleRegister = async () => {
+// Carregar dados do usuário atual
+onMounted(() => {
+  name.value = authStore.user?.name || ''
+  email.value = authStore.user?.email || ''
+})
+
+const handleUpdate = async () => {
   loading.value = true
   error.value = ''
+  success.value = ''
   
-  const result = await authStore.register({
-    name: name.value,
-    email: email.value,
-    password: password.value
-  })
-
-  if (result.success) 
-  {
-    if(result.data.token)
-    {
-      localStorage.setItem('token', result.data.token);
-      localStorage.setItem('user', JSON.stringify(result.data.user));
-      
-      authStore.token = result.data.token;
-      authStore.user = result.data.user;
-
-      await new Promise(resolve => setTimeout(resolve, 10))
-
-      router.push('/dashboard');
+  try {
+    const updateData = {
+      name: name.value,
+      email: email.value
     }
-    else
-    {
-      router.push('/login');
+    
+    // Só inclui senha se foi preenchida
+    if (password.value) {
+      updateData.password = password.value
     }
-  } else {
-    error.value = result.message
+    
+    const response = await userService.update(authStore.user.id, updateData)
+    
+    // Atualizar dados no store
+    authStore.user.name = updateData.name
+    authStore.user.email = updateData.email
+    localStorage.setItem('user', JSON.stringify(authStore.user))
+    
+    success.value = 'Perfil atualizado com sucesso!'
+    
+    // Limpar campo de senha
+    password.value = ''
+    
+    // Opcional: redirecionar após 2 segundos
+    // setTimeout(() => {
+    //   router.push('/dashboard')
+    // }, 2000)
+    
+  } catch (err) {
+    console.error('Erro ao atualizar perfil:', err)
+    error.value = err.response?.data?.message || 'Erro ao atualizar perfil. Tente novamente.'
+  } finally {
+    loading.value = false
   }
-  
-  loading.value = false
 }
 </script>
 
 <style scoped>
-.register-container {
+.edit-profile-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -111,7 +125,7 @@ const handleRegister = async () => {
   background-attachment: fixed;
 }
 
-.register-card {
+.edit-profile-card {
   background: white;
   padding: 2rem;
   border-radius: 8px;
@@ -144,6 +158,13 @@ input {
   font-size: 1rem;
 }
 
+.password-hint {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  margin-top: 4px;
+}
+
 button {
   width: 100%;
   padding: 0.75rem;
@@ -165,18 +186,28 @@ button:disabled {
 }
 
 .error {
-  color: red;
+  color: #dc3545;
   margin-top: 1rem;
   text-align: center;
 }
 
-.login-link {
+.success {
+  color: #42b883;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.back-link {
   text-align: center;
   margin-top: 1rem;
 }
 
-.login-link a {
+.back-link a {
   color: #42b883;
   text-decoration: none;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
 }
 </style>

@@ -26,7 +26,12 @@
       >
         <div class="category-info">
           <h3>{{ category.name }}</h3>
-          <p v-if="category.description">{{ category.description }}</p>
+          
+          <div v-if="category.description" class="category-desc-tooltip">
+              <i class="pi pi-info-circle"></i>
+              <span class="tooltip-text">{{ category.description }}</span>
+          </div>
+
           <small>{{ getLinkCount(category._id) }} links</small>
         </div>
         <!-- ✅ ADICIONEI @click.stop nos botões para não navegar -->
@@ -318,6 +323,8 @@ onMounted(() => {
   color: #6c757d;
   font-size: 13px;
   line-height: 1.4;
+  word-break: break-all;
+  text-overflow: ellipsis;
 }
 
 .category-info small {
@@ -335,6 +342,7 @@ onMounted(() => {
   gap: 8px;
   opacity: 0.6;
   transition: opacity 0.3s ease;
+  align-self: self-start;
 }
 
 .category-card:hover .category-actions {
@@ -461,5 +469,68 @@ onMounted(() => {
 .btn-save:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+/* Container do tooltip */
+.category-desc-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: help;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+
+.category-desc-tooltip i {
+  color: #42b883;
+  font-size: 14px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.category-desc-tooltip:hover i {
+  opacity: 1;
+}
+
+/* Texto do tooltip */
+.category-desc-tooltip .tooltip-text {
+  visibility: hidden;
+  background-color: #2c3e50;
+  color: #fff;
+  text-align: left;
+  border-radius: 8px;
+  padding: 10px 14px;
+  position: absolute;
+  z-index: 1000;
+  left: 30px;
+  bottom: 0px;
+  white-space: normal;
+  max-width: 235px;
+  min-width: 200px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: normal;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  word-wrap: break-word; /* Quebra palavras longas */
+  white-space: normal;
+}
+
+/* Seta do tooltip */
+.category-desc-tooltip .tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 60%;                    /* Centraliza verticalmente */
+  right: 99%;                 /* Coloca à esquerda do tooltip */
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent #2c3e50 transparent transparent;  /* Seta apontando para a direita */
+}
+
+.category-desc-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 </style>

@@ -33,7 +33,22 @@ export async function onEdit(userId, userData)
 {
     try 
     {
-        return await record.onEdit(COLLECTION, userId, userData);
+        const data = {};
+        
+        if (userData.name !== undefined) {
+            data.name = userData.name;
+        }
+        
+        if (userData.email !== undefined) {
+            data.email = userData.email;
+        }
+        
+        if (userData.password) {
+            const hashedPassword = await bcrypt.hash(userData.password, 8);
+            data.password = hashedPassword;
+        }
+        
+        return await record.onEdit(COLLECTION, userId, data);
     }
     catch(error) 
     {

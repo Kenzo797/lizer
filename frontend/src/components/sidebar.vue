@@ -23,6 +23,9 @@
 
     <div class="sidebar-footer">
       <div class="user-info">
+        <router-link to="/editprofile" class="btn-edit" title="Editar perfil">
+          <i class="pi pi-pencil"></i>
+        </router-link>
         <span class="user-name">{{ authStore.user?.name || 'Usuário' }}</span>
         <button @click="handleLogout" class="logout-btn">Sair</button>
       </div>
@@ -33,6 +36,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { userService } from '@/services/userService';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -123,6 +127,10 @@ const handleLogout = () => {
 .user-name {
   font-size: 14px;
   color: #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 53%;
 }
 
 .logout-btn {
@@ -137,5 +145,26 @@ const handleLogout = () => {
 
 .logout-btn:hover {
   background-color: #c82333;
+}
+
+.btn-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #42b883;
+  text-decoration: none;
+}
+
+.btn-edit:hover {
+  background-color: rgba(66, 184, 131, 0.2);
 }
 </style>

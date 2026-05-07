@@ -77,6 +77,11 @@ const handleLogin = async () => {
   align-items: center;
   min-height: 100vh;
   background-color: #f5f5f5;
+  background-image: url('@/images/login-waves-haikei.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-attachment: fixed;
 }
 
 .login-card {
