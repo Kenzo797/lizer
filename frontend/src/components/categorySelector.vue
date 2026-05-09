@@ -25,6 +25,7 @@
             <label>Nome da categoria *</label>
             <input 
               v-model="newCategoryName" 
+              maxlength="20"
               type="text"
               placeholder="Ex: Estudos, Trabalho, Pessoal"
               @keyup.enter="createCategory"
@@ -35,6 +36,7 @@
             <label>Descrição (opcional)</label>
             <textarea 
               v-model="newCategoryDescription" 
+              maxlength="60"
               rows="2"
               placeholder="Descreva o propósito desta categoria..."
             ></textarea>
@@ -74,6 +76,9 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';
 import { categoryService } from '../services/categoryService';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 
 const props = defineProps({
   modelValue: {
@@ -138,12 +143,25 @@ const createCategory = async () => {
     }
     
     closeModal();
-  } catch (error) {
+  } catch (error) 
+  {
+
     console.error('Erro ao criar categoria:', error);
-    if (error.response?.data?.error?.includes('já existe')) {
-      alert('Já existe uma categoria com este nome');
-    } else {
-      alert('Erro ao criar categoria. Tente novamente.');
+
+
+    if (error.response?.data?.error?.includes('já existe')) 
+    {
+      toast.error(`Já existe uma categoria com esse nome`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    } 
+    else 
+    {
+      toast.error(`Erro ao criar categoria`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
     }
   } finally {
     saving.value = false;

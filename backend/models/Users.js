@@ -26,6 +26,7 @@ export async function onSave(data)
     catch(error) 
     {
         console.error("Falha ao adicionar usuário: ", error);
+        throw error;
     }
 }
 
@@ -53,6 +54,7 @@ export async function onEdit(userId, userData)
     catch(error) 
     {
         console.error("Falha ao editar usuário: ", error);
+        throw error;
     }
 }
 
@@ -65,6 +67,7 @@ export async function onDelete(userId)
     catch(error)
     {
         console.error("Falha ao excluir usuário: ", error);
+        throw error;
     }
 }
 

@@ -89,8 +89,12 @@ export function createRoutes(model, routeName, options = {})
             {
                 data = { ...data, userId: req.userId};
             }
-
             const result = await model.onSave(data);
+
+            // SE CHEGAR AQUI, não houve erro
+            if (!result || !result.insertedId) {
+                throw new Error('Resultado inválido do onSave');
+            }
             res.status(201).json({
                 success: true,
                 message: `${routeName} salvo com sucesso !!!`,
@@ -113,9 +117,15 @@ export function createRoutes(model, routeName, options = {})
         
         try
         {
+            let data = req.body;
 
             if(isProtected)
             {
+                if(req.userId)
+                {
+                    data = { ...data, userId: req.userId};
+                }
+
                 const existing = await model.getById(req.params.id);
                 if(!existing || existing.userId !== req.userId)
                 {
@@ -125,8 +135,7 @@ export function createRoutes(model, routeName, options = {})
                     });
                 }
             }
-
-            const result = await model.onEdit(req.params.id, req.body);
+            const result = await model.onEdit(req.params.id, data);
             if(result)
             {
                 res.json({

@@ -2,7 +2,7 @@
   <div v-if="visible" class="modal-overlay" @click.self="cancel">
     <div class="modal">
       <div class="modal-header">
-        <i class="pi-exclamation-circle"></i>
+        <i class="pi pi-exclamation-circle"></i>
         <h3>{{ title }}</h3>
       </div>
       

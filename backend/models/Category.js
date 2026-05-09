@@ -26,7 +26,7 @@ export async function onSave(categoryData)
 
         const existing = await getManyByQuery({
             userId: categoryData.userId,
-            name: categoryData.name
+            name: cleanName
         });
 
         if(existing && existing.length > 0)
@@ -39,11 +39,14 @@ export async function onSave(categoryData)
             name: cleanName
         };
 
-        return await record.onSave(COLLECTION, cleanCategoryData);
+        const result = await record.onSave(COLLECTION, cleanCategoryData);
+        
+        return result;
     }
     catch(error) 
     {
         console.error("Falha ao adicionar categoria: ", error);
+        throw error;
     }
 }
 
@@ -57,17 +60,20 @@ export async function onEdit(categoryId, categoryData)
         {
             throw new Error('Nome da categoria não pode ficar vazio');
         }
-
-        const existing =await getManyByQuery({
+        
+        console.log('Busca pelo userId:', categoryData.userId);
+        console.log('Busca pelo nome:', categoryData.name);
+        const existing = await getManyByQuery({
             userId: categoryData.userId,
-            name: newName
+            name: categoryData.name
         });
+        
+        console.log('Chega no onSave com isso:', categoryData);
+        console.log('verifica se existe:',existing);    
 
-        const duplicate = existing?.find(cat => cat._id.toString() !== categoryId);
-
-        if(duplicate)
+        if(existing && existing.length > 0)
         {
-            throw new Error(`Já existe uma categoria com o nome "${newName}"`);
+            throw new Error('Esse nome de categoria já existe');
         }
 
         if(categoryData.description && categoryData.description.length > 60)
@@ -90,6 +96,7 @@ export async function onEdit(categoryId, categoryData)
     catch(error) 
     {
         console.error("Falha ao editar categoria: ", error);
+        throw error;
     }
 }
 
@@ -114,6 +121,7 @@ export async function onDelete(categoryId)
     catch(error)
     {
         console.error("Falha ao excluir categoria: ", error);
+        throw error;
     }
 }
 

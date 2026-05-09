@@ -22,12 +22,14 @@
 
         <div class="form-group">
           <label>Descrição</label>
-          <textarea v-model="form.description" maxlength="60" rows="3"></textarea>
+          <textarea v-model="form.description" maxlength="60" rows="3" placeholder="max 60 caracteres"></textarea>
         </div>
 
         <div class="form-group">
           <label>Tags (separadas por vírgula)</label>
-          <input v-model="tagsInput" @keydown="checkTagLength" @blur="addTag" />
+          <input v-model="tagsInput" @keydown="checkTagLength" @blur="addTag" placeholder="max 25 caracteres" @paste="handlePaste"/>
+
+          <small v-if="tagError" class="error-message">{{ tagError }}</small>
         </div>
 
         <div class="form-actions">
@@ -47,6 +49,11 @@
 import { ref, computed, watch } from 'vue';
 import { linkService } from '../services/linkService';
 import CategorySelector from './categorySelector.vue';  // ← Importa
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
+
+const tagError = ref('');
 
 const props = defineProps({
   link: {
@@ -94,7 +101,25 @@ watch(() => props.link, (newLink) => {
 
 const handleCategoryCreated = (newCategory) => {
   console.log('Categoria criada:', newCategory);
-  // A categoria já foi selecionada automaticamente pelo CategorySelector
+};
+
+const handlePaste = (event) => {
+
+  setTimeout(() => {
+    const pastedText = tagsInput.value;
+    const tags = pastedText.split(',').map(t => t.trim()).filter(t => t);
+    const invalidTags = tags.filter(tag => tag.length > maxTagLength);
+
+    if (invalidTags.length > 0) 
+    {
+      tagError.value = `Tags muito longas(max ${maxTagLength} caracteres)`;
+    }
+    else
+    {
+      tagError.value = '';
+    }
+
+  }, 10);
 };
 
 const maxTagLength = 25;
@@ -119,7 +144,11 @@ const save = async () => {
   const invalidTags = tags.filter(tag => tag.length > maxTagLength);
 
   if (invalidTags.length > 0) {
-    alert(`Tags não podem ter mais que ${maxTagLength} caracteres: ${invalidTags.join(', ')}`);
+    toast.error(`Tags muito longas (max ${maxTagLength})`, {
+      position: "top-right",
+      autoClose: 3500,
+    });
+    saving.value = false;
     return;
   }
   
@@ -133,7 +162,22 @@ const save = async () => {
     close();
   } catch (error) {
     console.error('Erro ao salvar link:', error);
-    alert('Erro ao salvar. Tente novamente.');
+
+    if (error.response?.data?.error?.includes('já existe')) 
+    {
+      toast.error(`Já existe uma categoria com esse nome`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    } 
+    else 
+    {
+      toast.error(`Erro ao criar categoria`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    }
+
   } finally {
     saving.value = false;
   }
@@ -231,4 +275,12 @@ const close = () => {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.error-message {
+  display: block;
+  color: #dc3545;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
 </style>

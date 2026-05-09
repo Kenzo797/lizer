@@ -31,6 +31,7 @@ export async function onSave(linkData)
     catch(error) 
     {
         console.error("Falha ao adicionar o link: ", error);
+        throw error;
     }
 }
 
@@ -38,11 +39,32 @@ export async function onEdit(linkId, linkData)
 {
     try 
     {
+        if(linkData.description && linkData.description.length > 60)
+        {
+            throw new Error("Descrição deve ter no máximo 60 caracteres");
+        }
+
+        if(linkData.title && linkData.title.length > 50)
+        {
+            throw new Error("Titulo deve ter no máximo 50 caracteres");
+        }
+
+        const maxTagLength = 25;
+
+        if(linkData.tags && Array.isArray(linkData.tags)) 
+        {
+            const invalidTags = linkData.tags.filter(tag => tag.length > maxTagLength);
+            if (invalidTags.length > 0) {
+                throw new Error(`Tags não podem ter mais que ${maxTagLength} caracteres`);
+            }
+        }
+
         return await record.onEdit(COLLECTION, linkId, linkData);
     }
     catch(error) 
     {
         console.error("Falha ao modificar o link: ", error);
+        throw error;
     }
 }
 
@@ -55,6 +77,7 @@ export async function onDelete(linkId)
     catch(error)
     {
         console.error("Falha ao excluir o link: ", error);
+        throw error;
     }
 }
 

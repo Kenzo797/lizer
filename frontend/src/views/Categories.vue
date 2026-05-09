@@ -96,6 +96,8 @@ import { useRouter } from 'vue-router';  // ← ADICIONAR
 import { categoryService } from '../services/categoryService';
 import { linkService } from '../services/linkService';
 import ConfirmModal from '../components/confirmModal.vue';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const router = useRouter();  // ← ADICIONAR
 
@@ -158,12 +160,15 @@ const saveCategory = async () => {
 
   saving.value = true;
   try {
-    if (isEditing.value) {
+    if (isEditing.value) 
+    {
       await categoryService.update(editingCategory.value._id, {
         name,
         description: formData.value.description.trim()
       });
-    } else {
+    } 
+    else 
+    {
       await categoryService.create({
         name,
         description: formData.value.description.trim()
@@ -174,7 +179,20 @@ const saveCategory = async () => {
     closeForm();
   } catch (error) {
     console.error('Erro ao salvar categoria:', error);
-    alert(error.response?.data?.error || 'Erro ao salvar categoria');
+    if (error.response?.data?.error?.includes('já existe')) 
+    {
+      toast.error(`Já existe uma categoria com esse nome`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    } 
+    else 
+    {
+      toast.error(`Erro ao criar categoria`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    }
   } finally {
     saving.value = false;
   }
