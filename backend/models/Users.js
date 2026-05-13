@@ -11,6 +11,14 @@ export async function onSave(data)
             throw new Error('Senha é obrigatória');
         }
 
+        if (data.email) {
+            const existingUser = await getByQuery({ email: data.email });
+            if (existingUser) {
+                throw new Error('Email já cadastrado');
+            }
+        }
+
+
         const hashedPassword = await bcrypt.hash(data.password, 8);
 
         const userData = {
@@ -36,15 +44,25 @@ export async function onEdit(userId, userData)
     {
         const data = {};
         
-        if (userData.name !== undefined) {
+        if (userData.name !== undefined) 
+        {
             data.name = userData.name;
         }
         
-        if (userData.email !== undefined) {
+        if (userData.email !== undefined) 
+        {
+            const existingUser = await getByQuery({ email: userData.email});
+
+            if(existingUser && existingUser._id.toString() !== userId)
+            {
+                throw new Error('Email já cadastrado');
+            }
+
             data.email = userData.email;
         }
         
-        if (userData.password) {
+        if (userData.password && userData.password.trim() !== '') 
+        {
             const hashedPassword = await bcrypt.hash(userData.password, 8);
             data.password = hashedPassword;
         }

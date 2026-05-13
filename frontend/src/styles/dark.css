@@ -1,0 +1,360 @@
+html.dark 
+{
+  /* Fundos */
+
+  --bg-color-1: #1e2021;
+  --bg-color-2: #191b1c;
+  --bg-color-3: #181a1b;
+  --bg-color-4: #232627;
+
+  /* b2aca2 */
+
+  --bg-card: #1f1f2f;
+  --bg-sidebar: #151525;
+  --sidebar-text-color: #dddad6;
+  
+  /* Textos */
+  --text-color-1: #d4d2ce;
+  --text-color-2: #c8c3bc;
+  --text-color-3: #e8e6e3;
+  --text-color-4: #b2aca2;
+  --text-color-5: #aec2d3;
+  --text-muted: #777;
+
+  --dark-pattern-green-1: #59c393;
+  --dark-pattern-green-2: #359369;
+  --dark-pattern-green-3: #298059;
+  --dark-pattern-green-4: #35936933;
+  --dark-pattern-red-1: #a51d2a;
+  --dark-pattern-red-2: #a01c29;
+  --dark-pattern-red-3: #df4655;
+
+  /* Bordas */
+  --border-color-1: #3a3e41;
+  --border-color-2: #7b7265;
+  --border-color-3: #30845e;
+  --icon-color: #a8a095;
+  
+  /* Cards */
+  --card-gradient-start: #1f1f2f;
+  --card-gradient-end: #16161f;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* Tags */
+  --tag-bg: #2a2a3e;
+  --tag-color: #ccc;
+}
+
+/* Aplicar as variáveis nos elementos */
+html.dark body {
+  background-color: var(--bg-color-1) !important;
+  color: var(--text-color-1) !important;
+}
+
+html.dark body .main-layout .sidebar .sidebar-header h2 
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark body h1, html.dark body h2 
+{
+    color: var(--text-color-2);
+}   
+
+html.dark .main-content .content-header h1, html.dark .main-content .page-header h1
+{
+    color: var(--text-color-2) !important;
+}
+
+html.dark .main-content .content-header, html.dark .main-content .page-header 
+{
+    border-bottom-color: var(--border-color-1);
+}
+
+html.dark .main-content .link-list .header-actions .search-box .search-input
+{
+    border-color: var(--border-color-1);
+    background-color: var(--bg-color-3);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .link-list .header-actions .search-box .search-input:focus
+{
+    outline-color: currentColor;
+    border-color: var(--border-color-3);
+    box-shadow: #35936933 0px 0px 0px 2px;
+
+}
+
+html.dark .main-content .link-list .header-actions .search-box .clear-search:hover
+{
+    background-color: var(--bg-color-4);
+    color: var(--text-color-4);
+}
+
+html.dark .main-content .link-list .header-actions .search-box .search-icon
+{
+    color: var(--icon-color);
+}
+
+html.dark .main-content .link-list .search-info
+{
+    background-color: var(--bg-color-4);
+    color: var(--text-color-4);
+}
+
+html.dark .main-content .link-list .header-actions .btn-add, html.dark .main-content .page-header .btn-add
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .link-list .header-actions .btn-add:hover, html.dark .main-content .page-header .btn-add:hover
+{
+    background-color: var(--dark-pattern-green-3);
+}
+
+html.dark .main-layout .sidebar
+{
+    background-color: var(--bg-sidebar);
+    color: var(--sidebar-text-color);
+}
+
+html.dark .main-layout .sidebar .sidebar-header
+{
+    border-bottom-color: var(--border-color-2);
+}
+
+html.dark .main-layout .sidebar .sidebar-header .sidebar-subheader .btn-toggle-dark
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .main-layout .sidebar-nav
+{
+    color: var(--text-color-3);
+}
+
+html.dark .main-layout .sidebar-nav .nav-item
+{
+    color: var(--text-color-1);
+}
+
+html.dark .main-layout .sidebar-nav .router-link-active
+{
+    background-color: var(--dark-pattern-green-2);
+}
+
+html.dark .main-layout .sidebar .sidebar-footer
+{
+    border-top-color: var(--border-color-2);
+}
+
+html.dark .main-layout .sidebar .sidebar-footer .user-info span
+{
+    color: var(--text-color-2);
+}
+
+html.dark .main-layout .sidebar .sidebar-footer .btn-edit 
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .main-layout .sidebar .sidebar-footer .btn-edit:hover
+{
+    background-color: var(--dark-pattern-green-4);
+}
+
+html.dark .main-layout .sidebar .sidebar-footer .logout-btn
+{
+    background-color: var(--dark-pattern-red-1); 
+    color: var(--text-color-3);
+}
+
+html.dark .main-layout .sidebar .sidebar-footer .logout-btn:hover
+{
+    background-color: var(--dark-pattern-red-2);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card 
+{
+    background-color: rgba(0, 0, 0, 0);
+    background-repeat: repeat;
+    background-image: linear-gradient(135deg, #181a1b 0%, #1b1e1f 100%);
+    background-size: auto;
+    background-clip: border-box;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    border-color: rgba(48, 132, 94, 0.1);
+    
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card:hover
+{
+    box-shadow: rgba(53, 147, 105, 0.15) 0px 8px 24px;
+    border-color: rgba(48, 132, 94, 0.3);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-header h3 .search-highlight
+{
+    background-color: var(--dark-pattern-green-4);
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content h3
+{
+    color: var(--text-color-5);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card:hover .link-content h3
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-url
+{
+    color: #9e9689;
+    text-decoration-color: currentColor;
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-url:hover
+{
+    background-color: #3593691a;
+    background-repeat: repeat;
+    background-image: none;
+    background-size: auto;
+    background-clip: border-box;
+    color: var(--dark-pattern-green-1);
+    text-decoration-color: currentColor;
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-desc-tooltip i
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-desc-tooltip span
+{
+    /* background-color: var(--bg-sidebar); */
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-tags .tag
+{
+    background-color: var(--bg-color-4);
+    color: #b5afa6;
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-tags .tag:hover
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions button
+{
+    background-color: var(--bg-color-3);
+    box-shadow: #0000000d 0px 2px 4px;
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-edit
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-edit:hover
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-delete
+{
+    color: var(--dark-pattern-red-3);
+}
+
+html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-delete:hover
+{
+    background-color: var(--dark-pattern-red-1);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal
+{
+    background-color: var(--bg-color-3);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal h2
+{
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .form-group
+{
+    border-color: var(--border-color-1);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container select
+{
+    border-color: #3a3e41;
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .form-group label
+{
+    color: var(--text-color-4);
+}
+
+
+html.dark .main-content .dashboard .modal-overlay .modal form .form-group input,
+html.dark .main-content .dashboard .modal-overlay .modal form .form-group textarea,
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container select
+{
+    background-color: #2b2a33;
+    border-color: var(--border-color-1);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .form-group input:focus-visible, 
+html.dark .main-content .dashboard .modal-overlay .modal form .form-group textarea:focus-visible
+{
+    outline: none;
+}
+
+
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
+.modal h3
+{
+    color: var(--text-color-1);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
+.modal .form-actions .btn-cancel
+{
+    background-color: var(--bg-color-4);
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
+.modal .form-actions .btn-save
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
+.modal .form-actions .btn-save:hover
+{
+    background-color: var(--dark-pattern-green-3);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selected-category
+.category-badge
+{
+    background-color: var(--bg-color-4);
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selected-category
+.category-desc
+{
+    color: var(--text-color-4);
+}

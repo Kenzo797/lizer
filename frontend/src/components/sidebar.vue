@@ -2,7 +2,13 @@
   <aside class="sidebar">
     <div class="sidebar-header">
       <h2>Lizer</h2>
-      <p>Organize Your Links</p>
+
+      <div class="sidebar-subheader">
+        <p>Organize Your Links</p>
+        <button class="btn-toggle-dark" @click="toggleDark()">
+          <i :class="isDark ? 'pi pi-moon' : 'pi pi-sun'"></i>
+        </button>
+      </div>
     </div>
 
     <nav class="sidebar-nav">
@@ -37,6 +43,11 @@
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { userService } from '@/services/userService';
+import { useDark, useToggle } from '@vueuse/core';
+
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -166,5 +177,27 @@ const handleLogout = () => {
 
 .btn-edit:hover {
   background-color: rgba(66, 184, 131, 0.2);
+}
+
+.sidebar-subheader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-toggle-dark {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px;
+  border-radius: 6px;
+  /* transition: all 0.2s ease; */
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  color: #42b883;
 }
 </style>

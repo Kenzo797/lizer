@@ -51,6 +51,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -89,8 +91,23 @@ const handleRegister = async () => {
     {
       router.push('/login');
     }
-  } else {
-    error.value = result.message
+  } 
+  else 
+  {
+    if (result.message?.includes('já cadastrado'))
+    {
+      toast.error(`Email já cadastrado`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    }
+    else
+    {
+      toast.error(`Falha ao criar usuário`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    }
   }
   
   loading.value = false
@@ -106,7 +123,7 @@ const handleRegister = async () => {
   background-color: #f5f5f5;
   background-image: url('@/images/register-waves-haikei.svg');
   background-position: center;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   background-size: 100% auto;
   background-attachment: fixed;
 }

@@ -18,10 +18,10 @@ router.post('/register', async (req, res) => {
 
         if(existingUser)
         {
-            return res.status(404).json({ message: 'Email já cadastrado'});
+            return res.status(400).json({ message: 'Email já cadastrado'});
         }
 
-        const result = await userModel.onSave({ name, email, password });
+        const result = await userModel.onSave({ name, email, password });''
 
         const token = jwt.sign(
             { id: result.insertedId, email},

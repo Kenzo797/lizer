@@ -79,7 +79,7 @@ const handleLogin = async () => {
   background-color: #f5f5f5;
   background-image: url('@/images/login-waves-haikei.svg');
   background-position: center;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   background-size: 100% auto;
   background-attachment: fixed;
 }

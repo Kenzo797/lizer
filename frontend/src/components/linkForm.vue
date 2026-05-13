@@ -4,7 +4,7 @@
       <h2>{{ isEditing ? 'Editar Link' : 'Novo Link' }}</h2>
       
       <form @submit.prevent="save">
-        <!-- Campos existentes -->
+        
         <div class="form-group">
           <label>Título *</label>
           <input v-model="form.title" type="text" maxlength="50" placeholder="Documentação de..." required/>

@@ -19,9 +19,14 @@ import Sidebar from '../components/sidebar.vue';
   overflow: hidden;
   background-image: url('@/images/main-layout-waves-haikei.svg');
   background-position: center;
+  /* background-position: bottom; */
   background-repeat: no-repeat;
-  background-size: 100% auto;
+  background-size: cover;
   background-attachment: fixed;
+}
+
+body textarea:focus,body input:focus,body select:focus {
+    outline: 0 !important;
 }
 
 /* .main-layout {

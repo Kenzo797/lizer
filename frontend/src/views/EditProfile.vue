@@ -52,6 +52,8 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { userService } from '../services/userService'
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -86,7 +88,7 @@ const handleUpdate = async () => {
     }
     
     const response = await userService.update(authStore.user.id, updateData)
-    
+    console.log(response);
     // Atualizar dados no store
     authStore.user.name = updateData.name
     authStore.user.email = updateData.email
@@ -104,7 +106,23 @@ const handleUpdate = async () => {
     
   } catch (err) {
     console.error('Erro ao atualizar perfil:', err)
-    error.value = err.response?.data?.message || 'Erro ao atualizar perfil. Tente novamente.'
+
+    if(err.response?.data?.error?.includes('já cadastrado'))
+    {
+      toast.error(`Email já cadastrado`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    }
+    else
+    {
+      toast.error(`Falha ao editar usuário`, {
+      position: "top-right",
+      autoClose: 3000,
+      });
+    }
+
+    // error.value = err.response?.data?.message || 'Erro ao atualizar perfil. Tente novamente.'
   } finally {
     loading.value = false
   }
@@ -120,7 +138,7 @@ const handleUpdate = async () => {
   background-color: #f5f5f5;
   background-image: url('@/images/register-waves-haikei.svg');
   background-position: center;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   background-size: 100% auto;
   background-attachment: fixed;
 }
