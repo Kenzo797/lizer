@@ -46,7 +46,16 @@ html.dark
 }
 
 /* Aplicar as variáveis nos elementos */
-html.dark body {
+
+html.dark body  input:focus,
+html.dark body textarea:focus,
+html.dark body select:focus {
+  border-color: var(--dark-pattern-green-2);
+  box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.1);
+}
+
+html.dark body 
+{
   background-color: var(--bg-color-1) !important;
   color: var(--text-color-1) !important;
 }
@@ -80,7 +89,7 @@ html.dark .main-content .link-list .header-actions .search-box .search-input
 
 html.dark .main-content .link-list .header-actions .search-box .search-input:focus
 {
-    outline-color: currentColor;
+    /* outline-color: currentColor; */
     border-color: var(--border-color-3);
     box-shadow: #35936933 0px 0px 0px 2px;
 
@@ -176,7 +185,7 @@ html.dark .main-layout .sidebar .sidebar-footer .logout-btn:hover
     background-color: var(--dark-pattern-red-2);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card 
+html.dark .main-content .link-list .links-grid .link-card 
 {
     background-color: rgba(0, 0, 0, 0);
     background-repeat: repeat;
@@ -188,35 +197,35 @@ html.dark .main-content .dashboard .link-list .links-grid .link-card
     
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card:hover
+html.dark .main-content .link-list .links-grid .link-card:hover
 {
     box-shadow: rgba(53, 147, 105, 0.15) 0px 8px 24px;
     border-color: rgba(48, 132, 94, 0.3);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-header h3 .search-highlight
+html.dark .main-content .link-list .links-grid .link-card .link-content .link-header h3 .search-highlight
 {
     background-color: var(--dark-pattern-green-4);
     color: var(--text-color-2);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content h3
+html.dark .main-content .link-list .links-grid .link-card .link-content h3
 {
     color: var(--text-color-5);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card:hover .link-content h3
+html.dark .main-content .link-list .links-grid .link-card:hover .link-content h3
 {
     color: var(--dark-pattern-green-1);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-url
+html.dark .main-content .link-list .links-grid .link-card .link-content .link-url
 {
     color: #9e9689;
     text-decoration-color: currentColor;
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-url:hover
+html.dark .main-content .link-list .links-grid .link-card .link-content .link-url:hover
 {
     background-color: #3593691a;
     background-repeat: repeat;
@@ -227,134 +236,429 @@ html.dark .main-content .dashboard .link-list .links-grid .link-card .link-conte
     text-decoration-color: currentColor;
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-desc-tooltip i
+html.dark .main-content .link-list .links-grid .link-card .link-content .link-footer .link-desc-tooltip i
 {
     color: var(--dark-pattern-green-1);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-desc-tooltip span
+html.dark .main-content .link-list .links-grid .link-card .link-content .link-footer .link-desc-tooltip span
 {
     /* background-color: var(--bg-sidebar); */
     color: var(--text-color-2);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-tags .tag
+html.dark .main-content  .link-list .links-grid .link-card .link-content .link-footer .link-tags .tag
 {
     background-color: var(--bg-color-4);
     color: #b5afa6;
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-content .link-footer .link-tags .tag:hover
+html.dark .main-content  .link-list .links-grid .link-card .link-content .link-footer .link-tags .tag:hover
 {
     background-color: var(--dark-pattern-green-2);
     color: var(--text-color-3);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions button
+html.dark .main-content  .link-list .links-grid .link-card .link-actions button
 {
     background-color: var(--bg-color-3);
     box-shadow: #0000000d 0px 2px 4px;
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-edit
+html.dark .main-content  .link-list .links-grid .link-card .link-actions .btn-edit
 {
     color: var(--dark-pattern-green-1);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-edit:hover
+html.dark .main-content  .link-list .links-grid .link-card .link-actions .btn-edit:hover
 {
     background-color: var(--dark-pattern-green-2);
     color: var(--text-color-3);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-delete
+html.dark .main-content  .link-list .links-grid .link-card .link-actions .btn-delete
 {
     color: var(--dark-pattern-red-3);
 }
 
-html.dark .main-content .dashboard .link-list .links-grid .link-card .link-actions .btn-delete:hover
+html.dark .main-content  .link-list .links-grid .link-card .link-actions .btn-delete:hover
 {
     background-color: var(--dark-pattern-red-1);
     color: var(--text-color-3);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal
+html.dark .main-content  .modal-overlay .modal
 {
     background-color: var(--bg-color-3);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal h2
+html.dark .main-content  .modal-overlay .modal h2
 {
     color: var(--text-color-2);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .form-group
+html.dark .main-content  .modal-overlay .modal form .form-group
 {
     border-color: var(--border-color-1);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container select
+html.dark .main-content  .modal-overlay .modal form .category-selector .selector-container select
 {
     border-color: #3a3e41;
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .form-group label
+html.dark .main-content  .modal-overlay .modal form .form-group label
 {
     color: var(--text-color-4);
 }
 
 
-html.dark .main-content .dashboard .modal-overlay .modal form .form-group input,
-html.dark .main-content .dashboard .modal-overlay .modal form .form-group textarea,
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container select
+html.dark .main-content  .modal-overlay .modal form .form-group input,
+html.dark .main-content  .modal-overlay .modal form .form-group textarea,
+html.dark .main-content  .modal-overlay .modal form .category-selector .selector-container select
 {
     background-color: #2b2a33;
     border-color: var(--border-color-1);
     color: var(--text-color-3);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .form-group input:focus-visible, 
-html.dark .main-content .dashboard .modal-overlay .modal form .form-group textarea:focus-visible
+/* html.dark .main-content  .modal-overlay .modal form .form-group input:focus-visible, 
+html.dark .main-content  .modal-overlay .modal form .form-group textarea:focus-visible
 {
     outline: none;
+} */
+
+html.dark .main-content  .modal-overlay .modal form .category-selector label
+{
+    color: var(--text-color-4);
 }
 
-
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
+html.dark .main-content  .modal-overlay .modal form .category-selector .selector-container
 .modal h3
 {
     color: var(--text-color-1);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
-.modal .form-actions .btn-cancel
+html.dark .main-content  .modal-overlay .modal form .category-selector .selector-container
+.modal .form-actions .btn-cancel, html.dark .main-content  .modal-overlay .modal form
+.form-actions .btn-cancel
 {
     background-color: var(--bg-color-4);
     color: var(--text-color-2);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
-.modal .form-actions .btn-save
+html.dark .main-content  .modal-overlay .modal form .category-selector .selector-container
+.modal .form-actions .btn-save, html.dark .main-content  .modal-overlay .modal form
+.form-actions .btn-save
 {
     background-color: var(--dark-pattern-green-2);
     color: var(--text-color-2);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selector-container
-.modal .form-actions .btn-save:hover
+html.dark .main-content  .modal-overlay .modal form .category-selector .selector-container
+.modal .form-actions .btn-save:hover, html.dark .main-content  .modal-overlay .modal form
+.form-actions .btn-save:hover
 {
     background-color: var(--dark-pattern-green-3);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selected-category
+html.dark .main-content  .modal-overlay .modal form .category-selector .selected-category
 .category-badge
 {
     background-color: var(--bg-color-4);
     color: var(--text-color-2);
 }
 
-html.dark .main-content .dashboard .modal-overlay .modal form .category-selector .selected-category
+html.dark .main-content  .modal-overlay .modal form .category-selector .selected-category
 .category-desc
 {
     color: var(--text-color-4);
 }
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+{
+    background-color: rgba(0, 0, 0, 0);
+    background-image: linear-gradient(135deg, #181a1b 0%, #1b1e1f 100%);
+    background-repeat: repeat;
+    background-size: auto;
+    background-clip: border-box;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    border-color: rgba(48, 132, 94, 0.102);
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card:hover
+{
+    box-shadow: rgba(53, 147, 105, 0.15) 0px 8px 24px;
+    border-color: rgba(48, 132, 94, 0.3);
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card::before
+{
+    background-color: var(--dark-pattern-green-2);
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-info h3
+{
+    color: var(--text-color-5)
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-info .category-desc-tooltip i
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-info .category-desc-tooltip .tooltip-text
+{
+    /* background-color: #233240; */
+    color: var(--text-color-2);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 4px 12px;
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-actions button
+{
+    background-color: var(--bg-color-3);
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px;
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-actions .btn-edit
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-actions .btn-edit:hover
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-actions .btn-delete
+{
+    color: var(--dark-pattern-red-3);
+}
+
+html.dark .main-content .content-header h1, html.dark .main-content .categories-page .categories-list .category-card
+.category-actions .btn-delete:hover
+{
+    background-color: var(--dark-pattern-red-1);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .modal-overlay #confirmModal
+{
+    background-color: var(--bg-color-3);
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-footer
+{
+    background-color: var(--bg-color-1);
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-footer .btn-confirm
+{
+    background-color: var(--dark-pattern-red-2);
+    color: var(--text-color-3);
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-footer .btn-confirm:hover
+{
+    background-color: var(--dark-pattern-red-3);
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-footer .btn-cancel
+{
+    background-color: var(--bg-color-4);
+    color: #b5afa6;
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-footer .btn-cancel:hover
+{
+    background-color: #282c2d;
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-header
+{
+    background-color: rgba(0, 0, 0, 0);
+    background-image: linear-gradient(135deg, #1b1e1f 0%,#181a1b 100%);
+    border-bottom-color: var(--border-color-1);
+    /* 353a3c */
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-header h3
+{
+    color: var(--text-color-2);
+}
+
+html.dark .main-content .modal-overlay #confirmModal .modal-body p
+{
+    color: var(--text-color-4);
+}
+
+html.dark .edit-profile-container
+{
+    background-image: url('../images/dark-register-waves-haikei.svg');
+}
+
+
+html.dark .edit-profile-container .edit-profile-card
+{
+    background-color: var(--bg-color-3);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
+}
+
+html.dark .edit-profile-container .edit-profile-card h2
+{
+    color: var(--text-color-2);
+}
+
+html.dark .edit-profile-container .edit-profile-card form .form-group input
+{
+    background-color: #2b2a33;
+    /* outline: none; */
+    border-color: var(--border-color-1);
+    color: var(--text-color-2);
+}
+
+html.dark .edit-profile-container .edit-profile-card form .form-group .password-hint
+{
+    color: #9d9488;
+}
+
+html.dark .edit-profile-container .edit-profile-card form .back-link a
+{
+    color: var(--dark-pattern-green-3);
+}
+
+html.dark .edit-profile-container .edit-profile-card form p
+{
+    color: var(--text-color-2);
+}
+
+html.dark .edit-profile-container .edit-profile-card form button
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-3);
+}
+
+html.dark .edit-profile-container .edit-profile-card form button:hover
+{
+    background-color: var(--dark-pattern-green-3);
+}
+
+/* display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 0px; */
+
+
+  /* width: 90%; */
+
+
+html.dark .login-container
+{
+    background-image: url('../images/dark-login-waves-haikei.svg');
+}
+
+html.dark .login-container .login-card
+{
+    background-color: var(--bg-color-3);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
+}
+
+html.dark .login-container .login-card h1
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .login-container .login-card h2
+{
+    color: var(--text-color-2);
+}
+
+html.dark .login-container .login-card form .form-group input
+{
+    background-color: #2b2a33;
+    border-color: var(--border-color-1);
+    color: var(--text-color-2);
+}
+
+
+html.dark .login-container .login-card form button
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-3);
+}
+
+html.dark .login-container .login-card form button:hover
+{
+    background-color: var(--dark-pattern-green-3);
+}
+
+html.dark .login-container .login-card form p
+{
+    color: var(--text-color-2);
+}
+
+html.dark .login-container .login-card form p a
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .register-container
+{
+    background-image: url('../images/dark-register-waves-haikei.svg');
+}
+
+html.dark .register-container .register-card
+{
+    background-color: var(--bg-color-3);
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
+}
+
+html.dark .register-container .register-card h1
+{
+    color: var(--dark-pattern-green-1);
+}
+
+html.dark .register-container .register-card h2
+{
+    color: var(--text-color-2);
+}
+
+html.dark .register-container .register-card form .form-group input
+{
+    background-color: #2b2a33;
+    border-color: var(--border-color-1);
+    color: var(--text-color-2);
+}
+
+
+html.dark .register-container .register-card form button
+{
+    background-color: var(--dark-pattern-green-2);
+    color: var(--text-color-3);
+}
+
+html.dark .register-container .register-card form button:hover
+{
+    background-color: var(--dark-pattern-green-3);
+}
+
+html.dark .register-container .register-card form p
+{
+    color: var(--text-color-2);
+}
+
+html.dark .register-container .register-card form p a
+{
+    color: var(--dark-pattern-green-1);
+}
+

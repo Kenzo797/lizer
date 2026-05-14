@@ -99,6 +99,7 @@ const handleRegister = async () => {
       toast.error(`Email já cadastrado`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     }
     else
@@ -106,6 +107,7 @@ const handleRegister = async () => {
       toast.error(`Falha ao criar usuário`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     }
   }

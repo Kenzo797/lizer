@@ -191,7 +191,7 @@ const handleLogout = () => {
   font-size: 14px;
   padding: 6px;
   border-radius: 6px;
-  /* transition: all 0.2s ease; */
+  transition: all 0.2s ease;
   width: 34px;
   height: 34px;
   display: flex;
@@ -199,5 +199,10 @@ const handleLogout = () => {
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   color: #42b883;
+}
+
+.btn-toggle-dark:hover
+{
+  background-color: #1f1f36de;
 }
 </style>

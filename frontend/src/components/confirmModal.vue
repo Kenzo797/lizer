@@ -1,6 +1,6 @@
 <template>
   <div v-if="visible" class="modal-overlay" @click.self="cancel">
-    <div class="modal">
+    <div class="modal" id="confirmModal">
       <div class="modal-header">
         <i class="pi pi-exclamation-circle"></i>
         <h3>{{ title }}</h3>
@@ -119,6 +119,7 @@ defineExpose({ show });
 
 .modal-body {
   padding: 24px;
+  text-align: center;
 }
 
 .modal-body p {

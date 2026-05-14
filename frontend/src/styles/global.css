@@ -1,0 +1,12 @@
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #42b883;
+  box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.1);
+}

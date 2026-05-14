@@ -147,6 +147,7 @@ const save = async () => {
     toast.error(`Tags muito longas (max ${maxTagLength})`, {
       position: "top-right",
       autoClose: 3500,
+      theme: isDark.value ? 'dark' : 'light'
     });
     saving.value = false;
     return;
@@ -168,6 +169,7 @@ const save = async () => {
       toast.error(`Já existe uma categoria com esse nome`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     } 
     else 
@@ -175,6 +177,7 @@ const save = async () => {
       toast.error(`Erro ao criar categoria`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     }
 

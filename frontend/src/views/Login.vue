@@ -27,7 +27,7 @@
           {{ loading ? 'Entrando...' : 'Entrar' }}
         </button>
         
-        <p v-if="error" class="error">{{ error }}</p>
+        <!-- <p v-if="error" class="error">{{ error }}</p> -->
         
         <p class="register-link">
           Não tem conta? 
@@ -35,6 +35,11 @@
         </p>
       </form>
     </div>
+
+    <button class="btn-toggle-dark" @click="toggleDark()">
+      <i :class="isDark ? 'pi pi-moon' : 'pi pi-sun'"></i>
+    </button>
+
   </div>
 </template>
 
@@ -42,6 +47,13 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { useDark, useToggle } from '@vueuse/core';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -62,7 +74,14 @@ const handleLogin = async () => {
   
   if (result.success) {
     router.push('/dashboard')
-  } else {
+  } 
+  else 
+  {
+    toast.error(`Email ou senha inválidos `, {
+      position: "top-right",
+      autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
+      });
     error.value = result.message
   }
   
@@ -152,5 +171,30 @@ button:disabled {
 .register-link a {
   color: #42b883;
   text-decoration: none;
+}
+
+.btn-toggle-dark {
+  background: #256d4ba3;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  color: #42b883;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.btn-toggle-dark:hover
+{
+  background-color: #1f1f36de;
 }
 </style>

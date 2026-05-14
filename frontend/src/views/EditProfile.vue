@@ -36,8 +36,8 @@
           {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
         </button>
         
-        <p v-if="error" class="error">{{ error }}</p>
-        <p v-if="success" class="success">{{ success }}</p>
+        <!-- <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="success" class="success">{{ success }}</p> -->
         
         <p class="back-link">
           <router-link to="/dashboard">Voltar para o Dashboard</router-link>
@@ -95,6 +95,12 @@ const handleUpdate = async () => {
     localStorage.setItem('user', JSON.stringify(authStore.user))
     
     success.value = 'Perfil atualizado com sucesso!'
+
+    toast.success(`Perfil atualizado com sucesso!`, {
+      position: "top-right",
+      autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
+    });
     
     // Limpar campo de senha
     password.value = ''
@@ -112,6 +118,7 @@ const handleUpdate = async () => {
       toast.error(`Email já cadastrado`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     }
     else
@@ -119,6 +126,7 @@ const handleUpdate = async () => {
       toast.error(`Falha ao editar usuário`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     }
 
@@ -139,7 +147,7 @@ const handleUpdate = async () => {
   background-image: url('@/images/register-waves-haikei.svg');
   background-position: center;
   /* background-repeat: no-repeat; */
-  background-size: 100% auto;
+  background-size: cover;
   background-attachment: fixed;
 }
 

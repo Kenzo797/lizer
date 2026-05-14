@@ -184,6 +184,7 @@ const saveCategory = async () => {
       toast.error(`Já existe uma categoria com esse nome`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     } 
     else 
@@ -191,6 +192,7 @@ const saveCategory = async () => {
       toast.error(`Erro ao criar categoria`, {
       position: "top-right",
       autoClose: 3000,
+      theme: isDark.value ? 'dark' : 'light'
       });
     }
   } finally {
