@@ -20,19 +20,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { linkService } from '../services/linkService';
+import { ref, computed, onMounted } from 'vue';
+import { useLinksStore } from '../stores/links';
 import LinkList from '../components/linkList.vue';
 import LinkForm from '../components/linkForm.vue';
 
-const links = ref([]);
+const linksStore = useLinksStore();
 const showLinkForm = ref(false);
+
+const links = computed(() => {
+  return [...linksStore.links].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+});
 
 const fetchLinks = async () => {
   try {
-    const response = await linkService.getAll();
-    links.value = response.data.data || [];
-    links.value.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    await linksStore.fetch(true);
   } catch (error) {
     console.error('Erro ao buscar links:', error);
   }
@@ -44,7 +46,9 @@ const handleLinkSaved = () => {
 };
 
 onMounted(() => {
-  fetchLinks();
+  linksStore.fetch().catch((error) => {
+    console.error('Erro ao buscar links:', error);
+  });
 });
 </script>
 

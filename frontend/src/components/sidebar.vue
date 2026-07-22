@@ -33,7 +33,7 @@
           <i class="pi pi-pencil"></i>
         </router-link>
         <span class="user-name">{{ authStore.user?.name || 'Usuário' }}</span>
-        <button @click="handleLogout" class="logout-btn">Sair</button>
+        <button @click="handleLogout" class="btn logout-btn">Sair</button>
       </div>
     </div>
   </aside>

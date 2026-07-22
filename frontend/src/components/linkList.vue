@@ -20,7 +20,7 @@
             <i class="pi pi-times"></i>
           </button>
         </div>
-        <button @click="showForm = true" class="btn-add">
+        <button @click="showForm = true" class="btn btn-add">
           <i class="pi pi-plus"></i> Adicionar Link
         </button>
       </div>
@@ -71,10 +71,10 @@
           </div>
         </div>
         <div class="link-actions">
-          <button @click="editLink(link)" class="btn-edit">
+          <button @click="editLink(link)" class="btn btn-edit">
             <i class="pi pi-pencil"></i>
           </button>
-          <button @click="confirmDelete(link)" class="btn-delete">
+          <button @click="confirmDelete(link)" class="btn btn-delete">
             <i class="pi pi-trash"></i>
           </button>
         </div>
@@ -331,6 +331,7 @@ const closeForm = () => {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: all 0.2s ease;
 }
 
 .btn-add:hover {
@@ -351,24 +352,6 @@ const closeForm = () => {
   padding-right: 8px;
   flex: 1;
   align-content: start;
-}
-
-.links-grid::-webkit-scrollbar {
-  width: 8px;
-}
-
-.links-grid::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.links-grid::-webkit-scrollbar-thumb {
-  background: #42b883;
-  border-radius: 4px;
-}
-
-.links-grid::-webkit-scrollbar-thumb:hover {
-  background: #33a06f;
 }
 
 .link-card {

@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { authService } from "@/services/authService";
+import { useLinksStore } from "@/stores/links";
+import { useCategoriesStore } from "@/stores/categories";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -51,6 +53,8 @@ export const useAuthStore = defineStore('auth', {
             this.user = null;
             this.token = null;
             authService.logout();
+            useLinksStore().$reset();
+            useCategoriesStore().$reset();
         }
 
     },

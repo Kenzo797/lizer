@@ -54,10 +54,25 @@ html.dark body select:focus {
   box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.1);
 }
 
-html.dark body 
+html.dark body
 {
   background-color: var(--bg-color-1) !important;
   color: var(--text-color-1) !important;
+}
+
+html.dark
+{
+  scrollbar-color: var(--dark-pattern-green-3) transparent;
+}
+
+html.dark *::-webkit-scrollbar-thumb
+{
+  background-color: var(--dark-pattern-green-3);
+}
+
+html.dark *::-webkit-scrollbar-thumb:hover
+{
+  background-color: var(--dark-pattern-green-2);
 }
 
 html.dark body .main-layout .sidebar .sidebar-header h2 
@@ -351,7 +366,7 @@ html.dark .main-content  .modal-overlay .modal form .category-selector .selector
 .modal .form-actions .btn-save, html.dark .main-content  .modal-overlay .modal form
 .form-actions .btn-save
 {
-    background-color: var(--dark-pattern-green-2);
+    background-color: var(--dark-pattern-green-3);
     color: var(--text-color-2);
 }
 
@@ -359,7 +374,7 @@ html.dark .main-content  .modal-overlay .modal form .category-selector .selector
 .modal .form-actions .btn-save:hover, html.dark .main-content  .modal-overlay .modal form
 .form-actions .btn-save:hover
 {
-    background-color: var(--dark-pattern-green-3);
+    background-color: var(--dark-pattern-green-2);
 }
 
 html.dark .main-content  .modal-overlay .modal form .category-selector .selected-category
@@ -462,7 +477,8 @@ html.dark .main-content .modal-overlay #confirmModal .modal-footer
 
 html.dark .main-content .modal-overlay #confirmModal .modal-footer .btn-confirm
 {
-    background-color: var(--dark-pattern-red-2);
+    /* background-color: var(--dark-pattern-red-2); */
+    background-color: #b23743;
     color: var(--text-color-3);
 }
 
@@ -662,3 +678,22 @@ html.dark .register-container .register-card form p a
     color: var(--dark-pattern-green-1);
 }
 
+
+html.dark .modal-overlay .modal form .form-actions button
+{
+    color: var(--text-color-3) !important;
+}
+
+html.dark .modal-overlay .modal form .form-actions .btn-cancel
+{
+    background-color: var(--bg-color-4);
+}
+
+html.dark .modal-overlay .modal form .form-actions .btn-cancel:hover
+{
+    background-color: #282c2d;
+}
+
+
+/* bgcolor4 */
+/* hover : #282c2d */

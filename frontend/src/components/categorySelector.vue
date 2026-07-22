@@ -76,6 +76,7 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';
 import { categoryService } from '../services/categoryService';
+import { useCategoriesStore } from '../stores/categories';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
@@ -89,7 +90,8 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue', 'category-created']);
 
-const categories = ref([]);
+const categoriesStore = useCategoriesStore();
+const categories = computed(() => categoriesStore.categories);
 const selectedCategoryId = ref(props.modelValue);
 const showNewCategoryModal = ref(false);
 const newCategoryName = ref('');
@@ -101,10 +103,9 @@ const selectedCategory = computed(() => {
   return categories.value.find(c => c._id === selectedCategoryId.value);
 });
 
-const loadCategories = async () => {
+const loadCategories = async (force = false) => {
   try {
-    const response = await categoryService.getAll();
-    categories.value = response.data.data || [];
+    await categoriesStore.fetch(force);
   } catch (error) {
     console.error('Erro ao carregar categorias:', error);
   }
@@ -131,8 +132,8 @@ const createCategory = async () => {
     });
     
     // Recarrega a lista de categorias
-    await loadCategories();
-    
+    await loadCategories(true);
+
     // Encontra a nova categoria criada
     const newCategory = categories.value.find(c => c._id === response.data.data.id);
     

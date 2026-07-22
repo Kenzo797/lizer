@@ -11,7 +11,7 @@
       :links="filteredLinks"
       :empty-message="emptyMessage"
       :pre-selected-category-id="category?._id"
-      @refresh="loadData"
+      @refresh="() => loadData(true)"
     />
   </div>
 </template>
@@ -19,18 +19,20 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { linkService } from '../services/linkService';
 import { categoryService } from '../services/categoryService';
+import { useLinksStore } from '../stores/links';
 import LinkList from '../components/linkList.vue';
 
 const route = useRoute();
 const router = useRouter();
-const allLinks = ref([]);
+const linksStore = useLinksStore();
 const category = ref(null);
 
 const filteredLinks = computed(() => {
   if (!category.value) return [];
-  return allLinks.value.filter(link => link.categoryId === category.value._id);
+  return [...linksStore.links]
+    .filter(link => link.categoryId === category.value._id)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 });
 
 const pageTitle = computed(() => {
@@ -51,20 +53,18 @@ const goBack = () => {
   router.push('/categories');
 };
 
-const loadData = async () => {
+const loadData = async (forceLinks = false) => {
   const categoryId = route.params.id;
-  
+
   try {
     const catResponse = await categoryService.getById(categoryId);
     category.value = catResponse.data.data;
   } catch (error) {
     console.error('Erro ao carregar categoria:', error);
   }
-  
+
   try {
-    const linksResponse = await linkService.getAll();
-    allLinks.value = linksResponse.data.data || [];
-    allLinks.value.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    await linksStore.fetch(forceLinks);
   } catch (error) {
     console.error('Erro ao carregar links:', error);
   }

@@ -33,10 +33,10 @@
         </div>
 
         <div class="form-actions">
-          <button type="button" @click="close" class="btn-cancel">
+          <button type="button" @click="close" class="btn btn-cancel">
             Cancelar
           </button>
-          <button type="submit" class="btn-save" :disabled="saving">
+          <button type="submit" class="btn btn-save" :disabled="saving">
             {{ saving ? 'Salvando...' : 'Salvar' }}
           </button>
         </div>

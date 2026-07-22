@@ -156,6 +156,7 @@ defineExpose({ show });
 
 .btn-cancel:hover {
   background-color: #dee2e6;
+  transform: scale(1.05);
 }
 
 .btn-confirm {
@@ -164,7 +165,8 @@ defineExpose({ show });
 }
 
 .btn-confirm:hover {
-  background-color: #33a06f;
+  /* background-color: #33a06f; */
+  transform: scale(1.05);
 }
 
 .btn-danger {

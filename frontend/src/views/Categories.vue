@@ -2,7 +2,7 @@
   <div class="categories-page">
     <header class="page-header">
       <h1>Categorias</h1>
-      <button @click="showForm = true" class="btn-add">
+      <button @click="showForm = true" class="btn btn-add">
         + Nova Categoria
       </button>
     </header>
@@ -77,10 +77,10 @@
           </div>
 
           <div class="form-actions">
-            <button type="button" @click="closeForm" class="btn-cancel">
+            <button type="button" @click="closeForm" class="btn btn-cancel">
               Cancelar
             </button>
-            <button type="submit" class="btn-save" :disabled="saving">
+            <button type="submit" class="btn btn-save" :disabled="saving">
               {{ saving ? 'Salvando...' : 'Salvar' }}
             </button>
           </div>
@@ -94,15 +94,18 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { categoryService } from '../services/categoryService';
-import { linkService } from '../services/linkService';
+import { useCategoriesStore } from '../stores/categories';
+import { useLinksStore } from '../stores/links';
 import ConfirmModal from '../components/confirmModal.vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 const router = useRouter();
+const categoriesStore = useCategoriesStore();
+const linksStore = useLinksStore();
 
-const categories = ref([]);
-const links = ref([]);
+const categories = computed(() => categoriesStore.categories);
+const links = computed(() => linksStore.links);
 const loading = ref(false);
 const saving = ref(false);
 const showForm = ref(false);
@@ -129,11 +132,10 @@ const goToCategoryLinks = (category) => {
 };
 
 // Carregar dados
-const loadCategories = async () => {
+const loadCategories = async (force = false) => {
   loading.value = true;
   try {
-    const response = await categoryService.getAll();
-    categories.value = response.data.data || [];
+    await categoriesStore.fetch(force);
   } catch (error) {
     console.error('Erro ao carregar categorias:', error);
   } finally {
@@ -141,10 +143,9 @@ const loadCategories = async () => {
   }
 };
 
-const loadLinks = async () => {
+const loadLinks = async (force = false) => {
   try {
-    const response = await linkService.getAll();
-    links.value = response.data.data || [];
+    await linksStore.fetch(force);
   } catch (error) {
     console.error('Erro ao carregar links:', error);
   }
@@ -175,7 +176,7 @@ const saveCategory = async () => {
       });
     }
     
-    await loadCategories();
+    await loadCategories(true);
     closeForm();
   } catch (error) {
     console.error('Erro ao salvar categoria:', error);
@@ -227,8 +228,8 @@ const confirmDelete = async (category) => {
     if(result)
     {
       await categoryService.delete(category._id);
-      await loadCategories();
-      await loadLinks();
+      await loadCategories(true);
+      await loadLinks(true);
     }
 
   }
@@ -488,6 +489,12 @@ onMounted(() => {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover
+{
+  transform: scale(1.05);
 }
 
 .btn-save {
