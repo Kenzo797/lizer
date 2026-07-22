@@ -11,15 +11,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-await connectDatabase();
-
-if(!process.env.JWT_SECRET)
-{
-    console.warn('AVISO: JWT_SECRET ,não definido');
-    console.warn('AVISO: usando chave temporaria');
+if (!process.env.JWT_SECRET) {
+    console.warn('AVISO: JWT_SECRET não definido');
+    console.warn('AVISO: usando chave temporária (apenas desenvolvimento)');
     process.env.JWT_SECRET = 'chave-temporaria-nao-usar-em-producao';
 }
 
+let cachedDb = null;
+
+async function connectToDatabase() 
+{
+  if (cachedDb) return cachedDb;
+  const db = await connectDatabase();
+  cachedDb = db;
+  return db;
+}
 
 // tem que ter a barra antes !!!!!!!!!!!
 app.use('/api/links', linkRoutes);
@@ -28,15 +34,19 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/auth', authRoutes);
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Lizer API is working !!!'});
+  res.json({ status: 'OK', message: 'Lizer API is working !!!' });
 });
 
-const PORT = process.env.PORT;
+//desenvolvimento local
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`WAAY Server running on port ${PORT}`);
+  });
+}
 
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-
-//pra rodar o servidor do back só rodar "node server.js"
-//se der erro olhar o ip no mongodb!!!
+//vercel (Serverless)
+export default async function handler(req, res) {
+  await connectToDatabase();
+  return app(req, res);
+}

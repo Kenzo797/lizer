@@ -179,7 +179,8 @@ const getDomain = (url) => {
 
 const getFaviconUrl = (url) => {
   const domain = getDomain(url);
-  return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+  const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+  return favicon;
 };
 
 // Fallback caso o favicon não carregue

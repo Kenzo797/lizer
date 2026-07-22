@@ -73,7 +73,7 @@ const form = ref({
   url: '',
   description: '',
   tags: [],
-  categoryId: null  // ← Adiciona este campo
+  categoryId: null  // <- Adiciona este campo
 });
 
 if(!props.link)
@@ -93,7 +93,7 @@ watch(() => props.link, (newLink) => {
       url: newLink.url,
       description: newLink.description || '',
       tags: newLink.tags || [],
-      categoryId: newLink.categoryId || null  // ← Carrega a categoria
+      categoryId: newLink.categoryId || null  // <- Carrega a categoria
     };
     tagsInput.value = (newLink.tags || []).join(', ');
   }

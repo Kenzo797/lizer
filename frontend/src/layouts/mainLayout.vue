@@ -29,15 +29,6 @@ body textarea:focus,body input:focus,body select:focus {
     outline: 0 !important;
 }
 
-/* .main-layout {
-   background-image: url('@/images/layered-waves-haikei.svg');
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  background-attachment: fixed;
-} */
-
-
 .main-content {
   flex: 1;
   overflow: hidden;

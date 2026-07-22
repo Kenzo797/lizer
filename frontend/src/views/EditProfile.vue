@@ -1,7 +1,6 @@
 <template>
   <div class="edit-profile-container">
     <div class="edit-profile-card">
-      <!-- <h1>Lizer</h1> -->
       <h2>Editar Perfil</h2>
       
       <form @submit.prevent="handleUpdate">
@@ -36,8 +35,6 @@
           {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
         </button>
         
-        <!-- <p v-if="error" class="error">{{ error }}</p>
-        <p v-if="success" class="success">{{ success }}</p> -->
         
         <p class="back-link">
           <router-link to="/dashboard">Voltar para o Dashboard</router-link>
@@ -130,7 +127,6 @@ const handleUpdate = async () => {
       });
     }
 
-    // error.value = err.response?.data?.message || 'Erro ao atualizar perfil. Tente novamente.'
   } finally {
     loading.value = false
   }

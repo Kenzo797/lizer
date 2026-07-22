@@ -27,7 +27,6 @@
           {{ loading ? 'Entrando...' : 'Entrar' }}
         </button>
         
-        <!-- <p v-if="error" class="error">{{ error }}</p> -->
         
         <p class="register-link">
           Não tem conta? 

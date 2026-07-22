@@ -17,7 +17,7 @@
     </div>
 
     <div v-else class="categories-list">
-      <!-- ✅ ADICIONEI O @click no card -->
+    
       <div 
         v-for="category in categories" 
         :key="category._id" 
@@ -92,14 +92,14 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';  // ← ADICIONAR
+import { useRouter } from 'vue-router';
 import { categoryService } from '../services/categoryService';
 import { linkService } from '../services/linkService';
 import ConfirmModal from '../components/confirmModal.vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-const router = useRouter();  // ← ADICIONAR
+const router = useRouter();
 
 const categories = ref([]);
 const links = ref([]);
@@ -551,7 +551,7 @@ onMounted(() => {
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
-  word-wrap: break-word; /* Quebra palavras longas */
+  word-wrap: break-word; 
   white-space: normal;
 }
 
@@ -559,11 +559,11 @@ onMounted(() => {
 .category-desc-tooltip .tooltip-text::after {
   content: '';
   position: absolute;
-  top: 60%;                    /* Centraliza verticalmente */
-  right: 99%;                 /* Coloca à esquerda do tooltip */
+  top: 60%;                    
+  right: 99%;                 
   border-width: 6px;
   border-style: solid;
-  border-color: transparent #2c3e50 transparent transparent;  /* Seta apontando para a direita */
+  border-color: transparent #2c3e50 transparent transparent;  
 }
 
 .category-desc-tooltip:hover .tooltip-text {
