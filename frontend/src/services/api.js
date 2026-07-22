@@ -1,8 +1,19 @@
 import { config } from "@vue/test-utils";
 import axios from "axios";
 
+const getBaseURL = () => 
+{
+
+    if(import.meta.env.PROD)
+    {
+        return '/api';
+    }
+
+    return 'http://localhost:3000/api';
+}
+
 const api = axios.create({
-    baseURL : 'http://localhost:3000/api',
+    baseURL : getBaseURL(),
     headers: {
         'Content-Type': 'application/json'
     }
