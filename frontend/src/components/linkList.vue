@@ -21,7 +21,7 @@
           </button>
         </div>
         <button @click="showForm = true" class="btn btn-add">
-          <i class="pi pi-plus"></i> Adicionar Link
+          <i class="pi pi-plus"></i> <text>Adicionar Link</text>
         </button>
       </div>
     </div>
@@ -363,6 +363,7 @@ const closeForm = () => {
   justify-content: space-between;
   transition: all 0.3s ease;
   border: 1px solid rgba(66, 184, 131, 0.1);
+  min-width: 0;
 }
 
 .link-card:hover {
@@ -373,6 +374,7 @@ const closeForm = () => {
 
 .link-content {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -563,25 +565,51 @@ const closeForm = () => {
 
 /* Responsividade */
 @media (max-width: 768px) {
+  .link-list {
+    padding: 16px;
+  }
+
   .header {
     flex-direction: column;
     align-items: stretch;
   }
-  
-  .header-actions {
-    flex-direction: column;
+
+  .header h2 
+  {
+    display: none;
   }
-  
+
+  .header-actions {
+    /* flex-direction: column; */
+    flex-direction: row;
+
+  }
+
+  .header-actions .btn-add text
+  {
+    display: none;
+  }
+
   .search-box {
     width: 100%;
   }
-  
+
   .search-input {
     width: 100%;
   }
-  
+
   .search-input:focus {
     width: 100%;
+  }
+
+  .links-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .link-list {
+    padding: 12px;
   }
 }
 </style>

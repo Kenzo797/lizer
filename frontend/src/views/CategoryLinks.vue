@@ -113,4 +113,16 @@ onMounted(() => {
 .btn-back i {
   font-size: 14px;
 }
+
+@media (max-width: 768px) {
+  .category-links-page {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-links-page {
+    padding: 12px;
+  }
+}
 </style>
