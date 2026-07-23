@@ -23,13 +23,16 @@
           />
         </div>
         
-        <div class="form-group">
-          <input 
-            v-model="password" 
-            type="password" 
+        <div class="password-container form-group">
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            v-model="password"
             placeholder="Senha"
             required
           />
+          <button @click="togglePassword" type="button" class="toggle-password">
+            <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+          </button>
         </div>
         
         <button type="submit" :disabled="loading">
@@ -53,15 +56,24 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { useDark, useToggle } from '@vueuse/core';
 
 const router = useRouter()
 const authStore = useAuthStore()
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
+const showPassword = ref(false)
+
+const togglePassword = () => {
+  showPassword.value = !showPassword.value
+}
 
 const handleRegister = async () => {
   loading.value = true
@@ -198,5 +210,27 @@ button:disabled {
 .login-link a {
   color: #42b883;
   text-decoration: none;
+}
+
+.password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.toggle-password {
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 7px;
+  padding: 6px 13px;
+  background: none;
+  position: absolute;
+  right: 15px;
+  background-color: transparent !important;
+  color: #42b883;
 }
 </style>

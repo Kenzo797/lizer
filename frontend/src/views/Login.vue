@@ -14,13 +14,16 @@
           />
         </div>
         
-        <div class="form-group">
+        <div class="password-container form-group">
           <input 
+            :type="showPassword ? 'text' : 'password'" 
             v-model="password" 
-            type="password" 
             placeholder="Senha"
             required
           />
+          <button @click="togglePassword" type="button" class="toggle-password">
+            <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+          </button>
         </div>
         
         <button type="submit" :disabled="loading">
@@ -50,6 +53,8 @@ import { useDark, useToggle } from '@vueuse/core';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
+const showPassword = ref(false);
+
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
@@ -61,6 +66,10 @@ const email = ref('')
 const password = ref('')
 const loading = ref(false)
 const error = ref('')
+
+const togglePassword = () => {
+  showPassword.value = !showPassword.value;
+};
 
 const handleLogin = async () => {
   loading.value = true
@@ -196,4 +205,29 @@ button:disabled {
 {
   background-color: #1f1f36de;
 }
+
+.password-container 
+{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.toggle-password
+{
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 7px;
+  padding: 6px 13px;
+  background: none;
+  position: absolute;
+  right: 15px;
+  background-color: transparent !important;
+  color: #42b883;
+}
+
 </style>

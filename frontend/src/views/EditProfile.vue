@@ -23,11 +23,16 @@
         </div>
         
         <div class="form-group">
-          <input 
-            v-model="password" 
-            type="password" 
-            placeholder="Nova senha (opcional)"
-          />
+          <div class="password-container">
+            <input
+              :type="showPassword ? 'text' : 'password'"
+              v-model="password"
+              placeholder="Nova senha (opcional)"
+            />
+            <button @click="togglePassword" type="button" class="toggle-password">
+              <i :class="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
+            </button>
+          </div>
           <small class="password-hint">Deixe em branco para manter a senha atual</small>
         </div>
         
@@ -49,11 +54,15 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { userService } from '../services/userService'
+import { useDark, useToggle } from '@vueuse/core';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 const router = useRouter()
 const authStore = useAuthStore()
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const name = ref('')
 const email = ref('')
@@ -61,6 +70,11 @@ const password = ref('')
 const loading = ref(false)
 const error = ref('')
 const success = ref('')
+const showPassword = ref(false)
+
+const togglePassword = () => {
+  showPassword.value = !showPassword.value
+}
 
 // Carregar dados do usuário atual
 onMounted(() => {
@@ -232,5 +246,27 @@ button:disabled {
 
 .back-link a:hover {
   text-decoration: underline;
+}
+
+.password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.toggle-password {
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 7px;
+  padding: 6px 13px;
+  background: none;
+  position: absolute;
+  right: 15px;
+  background-color: transparent !important;
+  color: #42b883;
 }
 </style>

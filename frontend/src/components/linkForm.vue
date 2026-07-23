@@ -51,7 +51,10 @@ import { linkService } from '../services/linkService';
 import CategorySelector from './categorySelector.vue';  // ← Importa
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { useDark, useToggle } from '@vueuse/core';
 
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const tagError = ref('');
 

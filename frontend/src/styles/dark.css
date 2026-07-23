@@ -695,5 +695,11 @@ html.dark .modal-overlay .modal form .form-actions .btn-cancel:hover
 }
 
 
+html.dark .main-layout .main-content .dashboard .content-header h1
+{
+    background-image: none;
+    background-color: transparent;
+}
+
 /* bgcolor4 */
 /* hover : #282c2d */

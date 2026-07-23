@@ -79,7 +79,10 @@ import { categoryService } from '../services/categoryService';
 import { useCategoriesStore } from '../stores/categories';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { useDark, useToggle } from '@vueuse/core';
 
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const props = defineProps({
   modelValue: {
