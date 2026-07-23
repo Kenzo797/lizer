@@ -205,4 +205,71 @@ const handleLogout = () => {
 {
   background-color: #1f1f36de;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .sidebar-header h2 {
+    font-size: 22px;
+  }
+
+  .sidebar-subheader p {
+    display: none;
+  }
+
+  .sidebar-nav {
+    flex: none;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    gap: 6px;
+  }
+
+  .nav-item {
+    padding: 8px 10px;
+  }
+
+  .nav-item .icon {
+    margin-right: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nav-item .label {
+    display: none;
+  }
+
+  .sidebar-footer {
+    padding: 0;
+    border-top: none;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .user-info
+  {
+    gap: 12px;
+  }
+}
 </style>

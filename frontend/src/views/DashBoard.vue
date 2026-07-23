@@ -89,4 +89,20 @@ onMounted(() => {
 .btn-add-link:hover {
   background-color: #33a06f;
 }
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 12px;
+  }
+
+  .content-header h1 {
+    font-size: 22px;
+  }
+}
 </style>

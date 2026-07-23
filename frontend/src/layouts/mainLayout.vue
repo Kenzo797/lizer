@@ -33,4 +33,10 @@ body textarea:focus,body input:focus,body select:focus {
   flex: 1;
   overflow: hidden;
 }
+
+@media (max-width: 768px) {
+  .main-layout {
+    flex-direction: column;
+  }
+}
 </style>

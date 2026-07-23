@@ -318,6 +318,7 @@ onMounted(() => {
   border: 1px solid rgba(66, 184, 131, 0.1);
   position: relative;
   overflow: hidden;
+  min-width: 0;
 }
 
 .category-card::before{
@@ -343,6 +344,7 @@ onMounted(() => {
 
 .category-info {
   flex: 1;
+  min-width: 0;
 }
 
 .category-info h3 {
@@ -580,5 +582,42 @@ onMounted(() => {
 .category-desc-tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .categories-page {
+    padding: 16px;
+  }
+
+  .categories-page .page-header
+  {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-page {
+    padding: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+  }
+
+  .categories-list {
+    grid-template-columns: 1fr;
+  }
+
+  .category-desc-tooltip .tooltip-text {
+    left: auto;
+    right: -10px;
+    max-width: min(220px, 70vw);
+  }
+
+  .category-desc-tooltip .tooltip-text::after {
+    right: auto;
+    left: 99%;
+    border-color: transparent transparent transparent #2c3e50;
+  }
 }
 </style>
