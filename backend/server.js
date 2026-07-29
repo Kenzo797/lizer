@@ -9,8 +9,8 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
-// Necessário na Vercel (atrás de proxy) para o express-rate-limit identificar
-// o IP real do cliente via X-Forwarded-For
+// Necessário na Vercel (atrás de proxy) para req.ip refletir o IP real do
+// cliente via X-Forwarded-For (usado no bloqueio progressivo de login)
 app.set('trust proxy', 1);
 
 const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',');

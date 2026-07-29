@@ -24,6 +24,7 @@ export const useAuthStore = defineStore('auth', {
             {
                 return {
                     success: false,
+                    status: error.response?.status,
                     message: error.response?.data?.message || 'Falha no login'
                 };
             }

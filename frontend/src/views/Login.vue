@@ -82,14 +82,25 @@ const handleLogin = async () => {
   
   if (result.success) {
     router.push('/dashboard')
-  } 
-  else 
+  }
+  else
   {
-    toast.error(`Email ou senha inválidos `, {
-      position: "top-right",
-      autoClose: 3000,
-      theme: isDark.value ? 'dark' : 'light'
+    if (result.status === 429)
+    {
+      toast.warning(result.message, {
+        position: "top-right",
+        autoClose: 5000,
+        theme: isDark.value ? 'dark' : 'light'
       });
+    }
+    else
+    {
+      toast.error(`Email ou senha inválidos `, {
+        position: "top-right",
+        autoClose: 3000,
+        theme: isDark.value ? 'dark' : 'light'
+        });
+    }
     error.value = result.message
   }
   

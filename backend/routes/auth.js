@@ -1,20 +1,83 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import rateLimit from 'express-rate-limit';
 import * as userModel from '../models/Users.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-// Limita tentativas de login por IP para dificultar força bruta de senha
-const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 10,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: { message: 'Muitas tentativas de login. Tente novamente em alguns minutos.' }
-});
+// Controle de força bruta no login, com bloqueio progressivo por IP.
+// Erros até MAX_FREE_ATTEMPTS não bloqueiam; a partir daí cada novo erro
+// bloqueia por um tempo maior, seguindo LOCKOUT_SCHEDULE_MINUTES.
+const MAX_FREE_ATTEMPTS = 10;
+const LOCKOUT_SCHEDULE_MINUTES = [1, 2, 4, 8, 15];
+const IDLE_RESET_MS = 60 * 60 * 1000;
+
+const loginAttempts = new Map();
+
+function getLoginKey(req)
+{
+    return req.ip;
+}
+
+function getAttemptRecord(key)
+{
+    const record = loginAttempts.get(key);
+
+    if (!record) return null;
+
+    const now = Date.now();
+    const isIdle = now > record.lockUntil && (now - record.lastAttempt) > IDLE_RESET_MS;
+
+    if (isIdle)
+    {
+        loginAttempts.delete(key);
+        return null;
+    }
+
+    return record;
+}
+
+function loginThrottle(req, res, next)
+{
+    const record = getAttemptRecord(getLoginKey(req));
+    const now = Date.now();
+
+    if (record && record.lockUntil > now)
+    {
+        const minutesLeft = Math.max(1, Math.ceil((record.lockUntil - now) / 60000));
+
+        return res.status(429).json({
+            message: `Muitas tentativas de login. Tente novamente em ${minutesLeft} minuto${minutesLeft > 1 ? 's' : ''}.`,
+            retryAfterMinutes: minutesLeft
+        });
+    }
+
+    next();
+}
+
+function registerFailedLogin(req)
+{
+    const key = getLoginKey(req);
+    const now = Date.now();
+    const record = getAttemptRecord(key) || { strikes: 0, lockUntil: 0, lastAttempt: now };
+
+    record.strikes += 1;
+    record.lastAttempt = now;
+
+    if (record.strikes > MAX_FREE_ATTEMPTS)
+    {
+        const level = Math.min(record.strikes - MAX_FREE_ATTEMPTS - 1, LOCKOUT_SCHEDULE_MINUTES.length - 1);
+        record.lockUntil = now + LOCKOUT_SCHEDULE_MINUTES[level] * 60 * 1000;
+    }
+
+    loginAttempts.set(key, record);
+}
+
+function clearFailedLogins(req)
+{
+    loginAttempts.delete(getLoginKey(req));
+}
 
 
 // Rota para cadastro
@@ -65,7 +128,7 @@ router.post('/register', async (req, res) => {
 
 
 
-router.post('/login', loginLimiter, async (req, res) => {
+router.post('/login', loginThrottle, async (req, res) => {
     try
     {
         const { email, password } = req.body;
@@ -79,16 +142,20 @@ router.post('/login', loginLimiter, async (req, res) => {
 
         if(!user)
         {
+            registerFailedLogin(req);
             return res.status(401).json({ message: ' Email ou senha inválidos '});
         }
 
 
         const isValidPassword = await bcrypt.compare(password, user.password);
-        
+
         if(!isValidPassword)
         {
+            registerFailedLogin(req);
             return res.status(401).json({ message: ' Email ou senha inválidos '});
         }
+
+        clearFailedLogins(req);
 
         const token = jwt.sign(
             {id: user._id, email: user.email },
