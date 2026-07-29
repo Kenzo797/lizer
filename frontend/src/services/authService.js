@@ -14,9 +14,14 @@ export const authService = {
         return response;
     },
 
-    logout() 
+    async me()
     {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        const response = await api.get('/auth/me');
+        return response;
+    },
+
+    async logout()
+    {
+        await api.post('/auth/logout');
     }
 };

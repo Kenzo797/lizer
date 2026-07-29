@@ -2,14 +2,21 @@ import jwt from 'jsonwebtoken';
 
 export function authMiddleware(req, res, next) 
 {
-    const authHeader = req.headers.authorization;
-  
-    if (!authHeader || !authHeader.startsWith('Bearer ')) 
+    let token = req.cookies?.token;
+
+    if(!token)
     {
-        return res.status(401).json({ message: 'Token não fornecido' });
+        const authHeader = req.headers.authorization;
+
+        if(authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
+            token = authHeader.split(' ')[1];
+        }
     }
-  
-    const token = authHeader.split(' ')[1];
+
+    if(!token)
+    {
+        return res.status(401).json({ message: 'Token não fornecido'});
+    }
   
     try 
     {

@@ -52,8 +52,8 @@ const toggleDark = useToggle(isDark);
 const router = useRouter();
 const authStore = useAuthStore();
 
-const handleLogout = () => {
-  authStore.logout();
+const handleLogout = async () => {
+  await authStore.logout();
   router.push('/login');
 };
 </script>
