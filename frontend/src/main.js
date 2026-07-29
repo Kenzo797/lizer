@@ -8,6 +8,11 @@ import router from './router'
 import 'primeicons/primeicons.css'
 import 'vue3-toastify/dist/index.css';
 
+// Limpa credenciais de versões antigas, que guardavam o token em localStorage
+// (agora a sessão vive num cookie httpOnly, fora do alcance do JS)
+localStorage.removeItem('token')
+localStorage.removeItem('user')
+
 const app = createApp(App)
 const pinia = createPinia();
 

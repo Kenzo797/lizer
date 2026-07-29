@@ -5,11 +5,22 @@ import userRoutes from './routes/users.js';
 import categoryRoutes from './routes/categories.js';
 import authRoutes from './routes/auth.js';
 import connectDatabase from './config/database.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
-app.use(cors());
+// Necessário na Vercel (atrás de proxy) para req.ip refletir o IP real do
+// cliente via X-Forwarded-For (usado no bloqueio progressivo de login)
+app.set('trust proxy', 1);
+
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',');
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser());
 
 if (!process.env.JWT_SECRET) {
     console.warn('AVISO: JWT_SECRET não definido');

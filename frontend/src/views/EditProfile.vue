@@ -103,8 +103,7 @@ const handleUpdate = async () => {
     // Atualizar dados no store
     authStore.user.name = updateData.name
     authStore.user.email = updateData.email
-    localStorage.setItem('user', JSON.stringify(authStore.user))
-    
+
     success.value = 'Perfil atualizado com sucesso!'
 
     toast.success(`Perfil atualizado com sucesso!`, {

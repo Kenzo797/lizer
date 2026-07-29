@@ -66,18 +66,29 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from) => {
+let sessionChecked = false
+
+router.beforeEach(async (to, from) => {
   const authStore = useAuthStore()
+
+  // Como o token vive num cookie httpOnly (inacessível ao JS), o estado da
+  // store some a cada recarregamento de página. Revalida com o backend uma
+  // única vez, na primeira navegação, antes de decidir o acesso.
+  if (!sessionChecked) {
+    sessionChecked = true
+    await authStore.checkAuth()
+  }
+
   const isAuthenticated = authStore.isAuthenticated
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     return '/login'
   }
-  
+
   if (to.meta.guest && isAuthenticated) {
     return '/dashboard'
   }
-  
+
   return true
 })
 
